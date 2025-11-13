@@ -109,7 +109,7 @@ export default function CustomersAllPage() {
     <main className="p-4 sm:p-6 text-[20px]">
       <section className="rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
         <div className="flex flex-col gap-4 px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-[22px] font-semibold">لیست کامل مشتریان (جدول هوشمند)</h2>
+          <h2 className="text-[22px] font-semibold">لیست کامل مشتریان</h2>
           <div className="flex flex-wrap items-center gap-3 text-[16px]">
             <input dir="rtl" value={q} onChange={(e)=>{setQ(e.target.value);setPage(0);}} placeholder="جستجو در همه فیلدها…" className="h-11 w-72 rounded-md border border-gray-300 bg-white px-4 text-[16px] outline-none placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-950" />
             <select value={level} onChange={(e)=>{setLevel(e.target.value as any);setPage(0);}} className="h-11 rounded-md border border-gray-300 bg-white px-3 text-[16px] dark:border-gray-700 dark:bg-gray-950">

@@ -30,10 +30,7 @@ const items: NavItem[] = [
     label: "مشتریان",
     href: "/customers",
     icon: Users,
-    children: [
-      { label: "همه مشتریان", href: "/customers/all" },
-      // بعداً اینجا زیرمنوهای بیشتری اضافه می‌شود
-    ],
+    children: [{ label: "همه مشتریان", href: "/customers/all" }],
   },
   { label: "کمپین‌های فروش", href: "/sales/campaigns", icon: Megaphone },
   { label: "فروش و بازاریابی", href: "/sales-marketing", icon: PresentationIcon },
@@ -64,8 +61,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     const map = new Map<string, boolean>();
     items.forEach((it) => {
       if ("children" in it && it.children?.length) {
-        const activeUnderGroup =
-          pathname === it.href || pathname.startsWith(it.href + "/");
+        const activeUnderGroup = pathname === it.href || pathname.startsWith(it.href + "/");
         map.set(it.href, activeUnderGroup);
       }
     });
@@ -75,8 +71,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
   const [openGroups, setOpenGroups] = useState(initiallyOpen);
   useEffect(() => setOpenGroups(initiallyOpen), [initiallyOpen]);
 
-  const toggleGroup = (href: string) =>
-    setOpenGroups((m) => new Map(m).set(href, !m.get(href)));
+  const toggleGroup = (href: string) => setOpenGroups((m) => new Map(m).set(href, !m.get(href)));
 
   const NavLeafItem = ({
     href,
@@ -97,21 +92,21 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           onClick={onClose}
           aria-current={active ? "page" : undefined}
           className={[
-            "flex items-center justify-start gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+            "flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[16px] transition-colors",
             active
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
-              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
+              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
           ].join(" ")}
         >
           {Icon ? (
             <Icon
-              size={18}
+              size={20}
               className="block text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
             />
           ) : null}
-          <span className="block truncate">{label}</span>
+          <span className="block truncate leading-6">{label}</span>
           {badge ? (
-            <span className="ms-auto rounded-full bg-sky-100 px-2 py-0.5 text-[10px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
+            <span className="ms-auto rounded-full bg-sky-100 px-2.5 py-0.5 text-[12px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
               {badge}
             </span>
           ) : null}
@@ -141,23 +136,23 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         <button
           onClick={() => toggleGroup(href)}
           className={[
-            "w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors",
+            "w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[16px] transition-colors",
             groupActive
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
-              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
+              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
           ].join(" ")}
           aria-expanded={expanded}
           aria-controls={`grp-${href}`}
         >
           <span className="flex items-center gap-2">
             <Icon
-              size={18}
+              size={20}
               className="text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
             />
-            <span className="truncate">{label}</span>
+            <span className="truncate leading-6">{label}</span>
           </span>
           <ChevronDown
-            size={16}
+            size={18}
             className={["transition-transform", expanded ? "rotate-180" : "rotate-0"].join(" ")}
           />
         </button>
@@ -191,9 +186,9 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       {/* Sidebar */}
       <aside
         className={[
-          "fixed right-0 top-0 z-50 h-full w-64 transform border-l border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900",
-          "lg:static lg:translate-x-0", // دسکتاپ: همیشه نمایان
-          open ? "translate-x-0" : "translate-x-full", // موبایل: اسلاید
+          "fixed right-0 top-0 z-50 h-full w-72 transform border-l border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900",
+          "lg:static lg:translate-x-0",
+          open ? "translate-x-0" : "translate-x-full",
         ].join(" ")}
         aria-hidden={!open}
       >
@@ -203,13 +198,13 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <button
               onClick={onClose}
               aria-label="بستن منو"
-              className="rounded-lg p-1.5 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
             >
-              <X size={18} />
+              <X size={20} />
             </button>
           </div>
 
-          <div className="mb-2 px-2 text-[10px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
+          <div className="mb-2 px-2 text-[12px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
             نمای کلی
           </div>
 
@@ -220,7 +215,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                   key={i.href}
                   label={i.label}
                   href={i.href}
-                  Icon={(i as NavGroup).icon}         // پاس صریح آیکن
+                  Icon={(i as NavGroup).icon}
                   children={(i as NavGroup).children}
                 />
               ) : (
@@ -228,7 +223,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
                   key={(i as NavLeaf).href}
                   href={(i as NavLeaf).href}
                   label={(i as NavLeaf).label}
-                  Icon={(i as NavLeaf).icon ?? null}   // پاس صریح آیکن
+                  Icon={(i as NavLeaf).icon ?? null}
                   badge={(i as NavLeaf).badge}
                 />
               )
@@ -239,12 +234,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
 
           <ul className="space-y-1">
             {settings.map((i) => (
-              <NavLeafItem
-                key={i.href}
-                href={i.href}
-                label={i.label}
-                Icon={i.icon ?? null}
-              />
+              <NavLeafItem key={i.href} href={i.href} label={i.label} Icon={i.icon ?? null} />
             ))}
           </ul>
 
@@ -252,13 +242,13 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <Link
               href="/logout"
               onClick={onClose}
-              className="group gap-2 flex items-center rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="group flex items-center gap-2 rounded-lg px-3 py-2.5 text-[16px] text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
             >
               <LogOut
-                size={18}
+                size={20}
                 className="shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
               />
-              <span className="truncate">خروج</span>
+              <span className="truncate leading-6">خروج</span>
             </Link>
           </div>
         </nav>
