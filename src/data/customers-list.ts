@@ -17,9 +17,6 @@ export type CustomerRow = {
   createdAt: string;
   status: MemberStatus;
 };
-
-// ... بالای فایل همان types قبلی باقی می‌ماند
-
 export const customersAll: CustomerRow[] = [
   {
     id: "1",
@@ -96,7 +93,6 @@ export const customersAll: CustomerRow[] = [
     createdAt: "2025-03-09",
     status: "فعال",
   },
-  // 10 رکورد جدید
   {
     id: "6",
     fullName: "نسترن کاظمی",

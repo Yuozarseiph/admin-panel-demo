@@ -17,6 +17,5 @@ export async function POST(req: Request) {
     count,
     createdAt: new Date().toISOString(),
   };
-  // TODO: ذخیره در DB
   return NextResponse.json({ ok: true, campaign: record });
 }

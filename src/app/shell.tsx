@@ -1,4 +1,4 @@
-// app/shell.tsx (بهبود موبایل)
+//app/shell.tsx
 "use client";
 
 import { useState } from "react";

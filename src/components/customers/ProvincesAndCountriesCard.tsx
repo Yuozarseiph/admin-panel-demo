@@ -44,7 +44,6 @@ const provinceDisplayNames: Record<string, string> = {
 export default function ProvincesAndCountriesCard({ className = "" }: { className?: string }) {
   const total = useMemo(() => Object.values(provincesCustomers).reduce((a, b) => a + b, 0), []);
 
-  // فقط 4 استان برتر
   const topProvinces = useMemo(() => {
     return Object.entries(provincesCustomers)
       .sort((a, b) => b[1] - a[1])
@@ -56,9 +55,8 @@ export default function ProvincesAndCountriesCard({ className = "" }: { classNam
       }));
   }, []);
 
-  // اندازه نقشه کوچک‌تر + اسکرول
   const mapWrapRef = useRef<HTMLDivElement | null>(null);
-  const [mapWidth, setMapWidth] = useState(420); // کوچکتر از قبل
+  const [mapWidth, setMapWidth] = useState(420);
 
   useEffect(() => {
     if (!mapWrapRef.current) return;
@@ -70,7 +68,6 @@ export default function ProvincesAndCountriesCard({ className = "" }: { classNam
       t = setTimeout(() => {
         for (const entry of entries) {
           const w = Math.floor(entry.contentRect.width);
-          // محدودیت جدید کوچک‌تر و اجازه برای اسکرول افقی
           const clamped = Math.max(320, Math.min(w, 520));
           setMapWidth(clamped - 24);
         }
@@ -91,7 +88,6 @@ export default function ProvincesAndCountriesCard({ className = "" }: { classNam
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
-        {/* ستون Progress فقط ۴ تا */}
         <section className="order-2 space-y-6 lg:order-1">
           {topProvinces.map((p, idx) => {
             const max = topProvinces[0].value || 1;
@@ -116,14 +112,12 @@ export default function ProvincesAndCountriesCard({ className = "" }: { classNam
             );
           })}
         </section>
-
-        {/* ستون نقشه با اسکرول (افقی و عمودی) */}
         <section className="order-1 lg:order-2">
           <div
             ref={mapWrapRef}
             className="relative max-h-[260px] w-full overflow-auto rounded-lg border border-transparent"
           >
-            <div className="min-w-[520px]"> {/* مجبور به اسکرول افقی در عرض کم */}
+            <div className="min-w-[520px]">
               <div className="w-full" style={{ aspectRatio: "5 / 3" }}>
                 <div className="absolute inset-0 overflow-visible p-1">
                   <div className="mx-auto" style={{ width: mapWidth }}>
@@ -142,8 +136,6 @@ export default function ProvincesAndCountriesCard({ className = "" }: { classNam
               </div>
             </div>
           </div>
-
-          {/* لِجند */}
           <div className="mt-3 flex items-center justify-center gap-6 text-xs">
             <div className="flex items-center gap-1">
               <span className="inline-block size-2.5 rounded-full bg-emerald-500" />

@@ -56,8 +56,6 @@ function Modal({
 
 export default function ProfileActions(props: Props) {
   const { customerId, fullName, mobile, email, currentLevel, currentStatus } = props;
-
-  // حالت مودال‌ها
   const [openNew, setOpenNew] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openLevel, setOpenLevel] = useState(false);
@@ -67,8 +65,6 @@ export default function ProfileActions(props: Props) {
   const [openDelete, setOpenDelete] = useState(false);
   const [openVoucher, setOpenVoucher] = useState(false);
   const [openDiscount, setOpenDiscount] = useState(false);
-
-  // داده‌های فرم
   const [fNew, setFNew] = useState({ fullName: "", mobile: "", email: "" });
   const [fEdit, setFEdit] = useState({ fullName: fullName, mobile: mobile ?? "", email: email ?? "" });
   const [fLevel, setFLevel] = useState(currentLevel);
@@ -78,8 +74,6 @@ export default function ProfileActions(props: Props) {
     status: currentStatus, reason: "",
   });
   const [confirmText, setConfirmText] = useState("");
-
-  // Helpers
   const post = async (url: string, body: any, method: "POST" | "PATCH" | "DELETE" = "POST") => {
     const res = await fetch(url, {
       method,
@@ -94,8 +88,6 @@ export default function ProfileActions(props: Props) {
     }
     alert("انجام شد");
   };
-
-  // سابمیت‌ها
   const submitNew = async () => post(`/api/customers`, fNew, "POST");
   const submitEdit = async () => post(`/api/customers/${customerId}`, fEdit, "PATCH");
   const submitLevel = async () => post(`/api/customers/${customerId}/level`, { level: fLevel });
@@ -128,8 +120,6 @@ export default function ProfileActions(props: Props) {
         <button onClick={() => setOpenDiscount(true)} className="rounded-lg border border-gray-300 px-3 py-2 text-[13px] hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">تخفیف دلخواه</button>
         <button onClick={() => setOpenDelete(true)} className="rounded-lg border border-rose-300 px-3 py-2 text-[13px] text-rose-700 hover:bg-rose-50 dark:border-rose-700/70 dark:text-rose-400 dark:hover:bg-rose-900/20">حذف کامل</button>
       </div>
-
-      {/* مودال‌ها */}
       <Modal open={openNew} onClose={() => setOpenNew(false)} title="افزودن عضو جدید" onSubmit={submitNew} submitText="افزودن">
         <Row label="نام و نام خانوادگی">
           <input value={fNew.fullName} onChange={(e) => setFNew({ ...fNew, fullName: e.target.value })} className="h-9 w-full rounded border border-gray-300 px-2 text-[13px] dark:border-gray-700 dark:bg-gray-950" />

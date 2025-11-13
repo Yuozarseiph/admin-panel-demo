@@ -74,8 +74,6 @@ function CustomizedLabelFa(props: any) {
     </g>
   );
 }
-
-/* کارت واحد با h-100 و layout ستونی */
 function WidgetCard({
   title,
   action,
@@ -119,8 +117,6 @@ export default function WidgetChartBars({
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // اگر والد هنگام mount ابعاد صفر داشت، با ResizeObserver یک رندر مجدد انجام بده
   useEffect(() => {
     if (!holderRef.current) return;
     const el = holderRef.current;
@@ -176,8 +172,6 @@ export default function WidgetChartBars({
           {totalText && <span className="flex items-center gap-1 text-emerald-500">{totalText}</span>}
         </div>
       )}
-
-      {/* لگند موبایل */}
       <div className="mb-4 mt-0 inline-flex items-center gap-5 @[28rem]:hidden" dir="rtl">
         {legends.map((l) => (
           <div key={l.key} className="flex items-center gap-1.5">
@@ -186,12 +180,9 @@ export default function WidgetChartBars({
           </div>
         ))}
       </div>
-
-      {/* بدنه چارت */}
       <div ref={holderRef} className="custom-scrollbar min-h-0 flex-1 overflow-x-auto pb-3">
         <div className="h-70 min-w-[800px] pt-1">
           {!mounted ? (
-            // گِیت اولیه برای SSR
             <div className="h-70 w-full" />
           ) : (
             <ResponsiveContainer key={refreshKey} width="100%" height="100%">
@@ -206,13 +197,9 @@ export default function WidgetChartBars({
                 <XAxis dataKey={xKey} axisLine={false} tickLine={false} />
                 <YAxis axisLine={false} tickLine={false} tickFormatter={(v) => formatFa(Number(v))} />
                 <Tooltip content={<TooltipFa />} cursor={false} />
-
-                {/* سری اول */}
                 <Bar dataKey={s1.key} name={s1.label} fill={s1.color} stroke={s1.color} barSize={40} radius={10}>
                   <LabelList dataKey={s1.key} content={<CustomizedLabelFa />} />
                 </Bar>
-
-                {/* سری دوم */}
                 <Bar dataKey={s2.key} name={s2.label} fill={s2.color} stroke={s2.color} barSize={40} radius={10}>
                   <LabelList dataKey={s2.key} content={<CustomizedLabelFa />} />
                 </Bar>

@@ -14,8 +14,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <main className="p-4 sm:p-6 text-[20px]">
       <ActionBar data={row} />
-
-      {/* سربرگ و خلاصه */}
       <section className="rounded-xl border border-gray-200 bg-white text-gray-800 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
         <div className="flex flex-wrap items-center justify-between gap-4 px-5 py-5">
           <div>
@@ -33,8 +31,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <div className="flex items-center justify-between sm:block"><div>وضعیت امتیاز</div><div className="font-medium text-gray-900 dark:text-gray-100">{toFa(row.usablePoints)} از {toFa(row.totalPoints)}</div></div>
         </div>
       </section>
-
-      {/* اطلاعات پایه */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">اطلاعات پایه</header>
         <div className="grid grid-cols-1 gap-4 px-5 py-5 text-[18px] sm:grid-cols-2 lg:grid-cols-3">
@@ -47,8 +43,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <div className="sm:col-span-2 lg:col-span-3"><span className="text-gray-500">آدرس:</span> <span>{row.address ?? "—"}</span></div>
         </div>
       </section>
-
-      {/* امتیاز و ولت */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">امتیاز و ولت</header>
         <div className="grid grid-cols-1 gap-5 px-5 py-5 sm:grid-cols-3">
@@ -57,8 +51,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           <div className="rounded-lg border border-gray-200 p-5 dark:border-gray-800"><div className="mb-1 text-[14px] text-gray-500">سطح عضویت</div><div className="text-[20px] font-semibold">{row.level}</div></div>
         </div>
       </section>
-
-      {/* تاریخچه خرید */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">تاریخچه خرید</header>
         <div className="overflow-x-auto">
@@ -83,8 +75,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </table>
         </div>
       </section>
-
-      {/* کوپن‌ها */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">کوپن‌ها / پاداش‌ها</header>
         <div className="grid grid-cols-1 gap-4 px-5 py-5 md:grid-cols-2">
@@ -102,8 +92,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           {row.vouchers.length === 0 && <div className="px-4 py-2 text-[16px] text-gray-500">موردی نیست</div>}
         </div>
       </section>
-
-      {/* ارتباطات */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">ارتباطات</header>
         <div className="overflow-x-auto">
@@ -131,8 +119,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </table>
         </div>
       </section>
-
-      {/* معرفی دوستان */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">معرفی دوستان</header>
         <div className="grid grid-cols-1 gap-4 px-5 py-5 md:grid-cols-2">
@@ -145,8 +131,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           {row.friends.length === 0 && <div className="px-4 py-2 text-[16px] text-gray-500">موردی نیست</div>}
         </div>
       </section>
-
-      {/* یادداشت‌ها */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">یادداشت‌های داخلی</header>
         <ul className="divide-y divide-gray-200 px-5 text-[18px] dark:divide-gray-800">
@@ -159,8 +143,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           {row.notes.length === 0 && <li className="py-4 text-[16px] text-gray-500">یادداشتی ثبت نشده است</li>}
         </ul>
       </section>
-
-      {/* لاگ فعالیت */}
       <section className="mt-5 rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900 mb-10">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-3 text-[14px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-300">لاگ فعالیت</header>
         <div className="overflow-x-auto">

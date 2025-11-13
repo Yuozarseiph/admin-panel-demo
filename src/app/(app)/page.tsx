@@ -8,7 +8,6 @@ import SalesPerformanceBars from "@/components/customers/SalesPerformanceBars";
 import RatingAnalyticsRings from "@/components/customers/RatingAnalyticsRings";
 import CustomerActivityGauge from "@/components/customers/CustomerActivityGauge";
 import ProvincesAndCountriesCard from "@/components/customers/ProvincesAndCountriesCard";
-import TotalAppointment from "@/components/customers/Analitics";
 import PatientAppointmentFa from "@/components/customers/Analitics";
 
 export default function Page() {

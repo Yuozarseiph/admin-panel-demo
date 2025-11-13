@@ -11,8 +11,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-
-/* ماه‌های جلالی به ترتیب: فروردین تا اسفند */
 const monthsFa = [
   "فروردین",
   "اردیبهشت",
@@ -27,8 +25,6 @@ const monthsFa = [
   "بهمن",
   "اسفند",
 ];
-
-/* داده نمونه هم‌طول با 12 ماه جلالی */
 const data = [
   { month: monthsFa[0],  newPatients: 570, returningPatients: 290 },
   { month: monthsFa[1],  newPatients: 500, returningPatients: 300 },
@@ -44,13 +40,11 @@ const data = [
   { month: monthsFa[11], newPatients: 610, returningPatients: 290 },
 ];
 
-/* رنگ‌ها (خطوط ثابت مطابق طرح؛ fill ها شفاف برای هر دو تم) */
 const COLORS = {
-  primary: "#2B7F75", // بیماران جدید
-  muted: "#DFDFDF",   // بیماران بازگشتی
+  primary: "#2B7F75",
+  muted: "#DFDFDF",
 };
 
-/* کمکی‌ها */
 function cn(...inputs: Array<string | undefined | null | false>) {
   return inputs.filter(Boolean).join(" ");
 }
@@ -58,7 +52,6 @@ function formatFa(n: number) {
   return new Intl.NumberFormat("fa-IR").format(n);
 }
 
-/* کارت با پشتیبانی از تم */
 function Card({
   children,
   className,
@@ -70,7 +63,6 @@ function Card({
   );
 }
 
-/* هدر: سمت چپ (بازه و لگند)، سمت راست (عنوان، عدد، درصد) */
 function HeaderFa({
   onRangeChange,
   total = 2834,
@@ -120,7 +112,6 @@ function HeaderFa({
   );
 }
 
-/* Tooltip فارسی */
 function TooltipFa({
   active,
   label,
@@ -151,7 +142,6 @@ function TooltipFa({
   );
 }
 
-/* نقطه سفارشی */
 function Dot({ cx, cy, color }: any) {
   return (
     <svg x={cx - 7} y={cy - 9} width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -160,7 +150,6 @@ function Dot({ cx, cy, color }: any) {
   );
 }
 
-/* کامپوننت اصلی */
 export default function PatientAppointmentFaJalali({ className }: { className?: string }) {
   function handleRangeChange(v: string) {
     console.log("بازه:", v);

@@ -15,30 +15,120 @@ import {
   LogOut,
   HomeIcon,
   ChevronDown,
+  MessageSquare,
+  BellRing,
+  Percent as PercentIcon,
+  Flashlight,
+  ListChecks,
+  Bot,
+  Gift,
+  Wand2,
+  UserPlus,
+  UsersRound,
+  PlusCircle,
+  BarChart3,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 type NavIcon = React.ComponentType<{ size?: number; className?: string }>;
 type NavLeaf = { label: string; href: string; icon?: NavIcon; badge?: string };
-type NavGroup = { label: string; href: string; icon: NavIcon; children?: NavLeaf[] };
+type NavGroup = {
+  label: string;
+  href: string;
+  icon: NavIcon;
+  children?: NavLeaf[];
+};
 type NavItem = NavLeaf | NavGroup;
-
 const items: NavItem[] = [
   { label: "داشبورد", href: "/", icon: HomeIcon },
   { label: "هوش مصنوعی", href: "/ai", icon: BrainCircuit },
+
   {
     label: "مشتریان",
     href: "/customers",
     icon: Users,
-    children: [{ label: "همه مشتریان", href: "/customers/all" }],
+    children: [
+      { label: "همه مشتریان", href: "/customers/all", icon: UsersRound },
+      { label: "افزودن مشتری", href: "/customers/new", icon: UserPlus },
+    ],
   },
-  { label: "کمپین‌های فروش", href: "/sales/campaigns", icon: Megaphone },
-  { label: "فروش و بازاریابی", href: "/sales-marketing", icon: PresentationIcon },
-  { label: "امتیازدهی و سطح‌بندی", href: "/scoring", icon: Medal },
+
+  {
+    label: "کمپین‌های فروش",
+    href: "/sales",
+    icon: Megaphone,
+    children: [
+      { label: "لیست کمپین ها", href: "/sales/campaigns", icon: ListChecks },
+      { label: "کمپین جدید", href: "/sales/new-campaigns", icon: PlusCircle },
+      {
+        label: "ساخت کمپین با هوش مصنوعی",
+        href: "/sales/new-campaigns-ai",
+        icon: Bot,
+      },
+      {
+        label: "گزارش کلی کمپین ها",
+        href: "/sales/campaigns-full-report",
+        icon: BarChart3,
+      },
+    ],
+  },
+
+  {
+    label: "فروش و بازاریابی",
+    href: "/sales-marketing",
+    icon: PresentationIcon,
+    children: [
+      {
+        label: "اطلاع رسانی سریع",
+        href: "/sales-marketing/quick-broadcast",
+        icon: BellRing,
+      },
+      {
+        label: "پروموشن و تخفیف",
+        href: "/sales-marketing/promotions",
+        icon: PercentIcon,
+      },
+      {
+        label: "آفرهای لحظه ای",
+        href: "/sales-marketing/flash-offers",
+        icon: Flashlight,
+      },
+      {
+        label: "ساخت لیست ارسال",
+        href: "/sales-marketing/send-lists",
+        icon: ListChecks,
+      },
+      { label: "هوش مصنوعی بازاریابی", href: "/sales-marketing/ai", icon: Bot },
+    ],
+  },
+
+  {
+    label: "امتیازدهی و پاداش",
+    href: "/rewards",
+    icon: Medal,
+    children: [
+      { label: "ایجاد امتیاز و پاداش", href: "/rewards/new", icon: Gift },
+      { label: "ایجاد با هوش مصنوعی", href: "/rewards/new-ai", icon: Wand2 },
+    ],
+  },
+
   { label: "گزارشات فروش", href: "/sales/reports", icon: FileBarChart2 },
+
+  {
+    label: "تیکت و پشتیبانی",
+    href: "/support",
+    icon: MessageSquare,
+    children: [
+      { label: "همه تیکت‌ها", href: "/support/tickets" },
+      { label: "تیکت‌های باز", href: "/support/open" },
+      { label: "ایجاد تیکت", href: "/support/new" },
+    ],
+  },
 ];
 
-const settings: NavLeaf[] = [{ label: "تنظیمات", href: "/settings", icon: Settings }];
+const settings: NavLeaf[] = [
+  { label: "تنظیمات", href: "/settings", icon: Settings },
+];
 
 interface SidebarProps {
   open: boolean;
@@ -47,8 +137,6 @@ interface SidebarProps {
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
-
-  // قفل اسکرول در موبایل وقتی منو باز است
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -56,22 +144,26 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     };
   }, [open]);
 
-  // باز/بسته بودن گروه‌ها بر اساس مسیر فعلی
-  const initiallyOpen = useMemo(() => {
-    const map = new Map<string, boolean>();
-    items.forEach((it) => {
-      if ("children" in it && it.children?.length) {
-        const activeUnderGroup = pathname === it.href || pathname.startsWith(it.href + "/");
-        map.set(it.href, activeUnderGroup);
-      }
-    });
-    return map;
-  }, [pathname]);
+  const groupKeys = useMemo(
+    () =>
+      items
+        .filter(
+          (it): it is NavGroup => "children" in it && !!it.children?.length
+        )
+        .map((g) => g.href),
+    []
+  );
+  const defaultOpenKey = useMemo(() => {
+    const hit = groupKeys.find(
+      (g) => pathname === g || pathname.startsWith(g + "/")
+    );
+    return hit ?? null;
+  }, [pathname, groupKeys]);
+  const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey);
+  useEffect(() => setOpenKey(defaultOpenKey), [defaultOpenKey]);
 
-  const [openGroups, setOpenGroups] = useState(initiallyOpen);
-  useEffect(() => setOpenGroups(initiallyOpen), [initiallyOpen]);
-
-  const toggleGroup = (href: string) => setOpenGroups((m) => new Map(m).set(href, !m.get(href)));
+  const toggleGroup = (href: string) =>
+    setOpenKey((cur) => (cur === href ? null : href));
 
   const NavLeafItem = ({
     href,
@@ -84,7 +176,8 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     Icon?: NavIcon | null;
     badge?: string;
   }) => {
-    const active = pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+    const active =
+      pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
     return (
       <li>
         <Link
@@ -126,11 +219,12 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     Icon: NavIcon;
     children?: NavLeaf[];
   }) => {
-    const expanded = openGroups.get(href) ?? false;
+    const expanded = openKey === href;
     const groupActive =
       pathname === href ||
       pathname.startsWith(href + "/") ||
       children.some((c) => pathname.startsWith(c.href));
+
     return (
       <li>
         <button
@@ -153,7 +247,10 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           </span>
           <ChevronDown
             size={18}
-            className={["transition-transform", expanded ? "rotate-180" : "rotate-0"].join(" ")}
+            className={[
+              "transition-transform",
+              expanded ? "rotate-180" : "rotate-0",
+            ].join(" ")}
           />
         </button>
 
@@ -165,7 +262,12 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           ].join(" ")}
         >
           {children.map((c) => (
-            <NavLeafItem key={c.href} href={c.href} label={c.label} Icon={null} />
+            <NavLeafItem
+              key={c.href}
+              href={c.href}
+              label={c.label}
+              Icon={c.icon ?? null}
+            />
           ))}
         </ul>
       </li>
@@ -174,7 +276,6 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
 
   return (
     <>
-      {/* Overlay برای موبایل */}
       {open && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -182,8 +283,6 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           aria-hidden="true"
         />
       )}
-
-      {/* Sidebar */}
       <aside
         className={[
           "fixed right-0 top-0 z-50 h-full w-72 transform border-l border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900",
@@ -193,7 +292,6 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         aria-hidden={!open}
       >
         <nav className="flex h-full flex-col p-3">
-          {/* دکمه بستن فقط موبایل */}
           <div className="mb-4 flex items-center justify-between lg:hidden">
             <button
               onClick={onClose}
@@ -234,7 +332,12 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
 
           <ul className="space-y-1">
             {settings.map((i) => (
-              <NavLeafItem key={i.href} href={i.href} label={i.label} Icon={i.icon ?? null} />
+              <NavLeafItem
+                key={i.href}
+                href={i.href}
+                label={i.label}
+                Icon={i.icon ?? null}
+              />
             ))}
           </ul>
 

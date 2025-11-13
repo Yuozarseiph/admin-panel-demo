@@ -36,8 +36,6 @@ export async function POST(req: Request) {
     if (j?.error) {
       return NextResponse.json({ error: "No valid filters extracted" }, { status: 422 });
     }
-
-    // شمارش را فعلاً mock می‌گذاریم تا ساده بماند
     const filters = {
       province: Array.isArray(j.filters?.province) ? j.filters.province : [],
       lastPurchaseDays: typeof j.filters?.lastPurchaseDays === "number" ? j.filters.lastPurchaseDays : undefined,

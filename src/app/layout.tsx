@@ -1,4 +1,4 @@
-// app/layout.tsx (اصلاح نهایی)
+// app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";

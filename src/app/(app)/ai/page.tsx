@@ -295,8 +295,6 @@ export default function AiActionsPage() {
               <div className="h-6" />
             </div>
           </div>
-
-          {/* Composer + دکمه‌های سمت چپ */}
           <div className="p-4 gap-2 flex items-center justify-center">
             <div className="rounded-lg grow">
               <div className="flex items-center gap-2">

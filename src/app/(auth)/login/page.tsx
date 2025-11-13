@@ -20,10 +20,7 @@ export default function LoginPage() {
 
   return (
     <main className="relative min-h-dvh overflow-hidden">
-      {/* اول بک‌گراند تا فرم همیشه روی آن باشد */}
       <FullScreenBackground />
-
-      {/* فرم دقیقاً سمت راست */}
       <div className="relative z-10 mx-auto flex min-h-dvh w-full max-w-7xl items-center justify-start px-4 sm:px-6">
         <div className="me-4 w-full max-w-sm rounded-2xl bg-white/90 p-5 shadow-2xl backdrop-blur md:me-10 dark:bg-gray-900/90">
           <div className="mb-4 flex items-center justify-center">
