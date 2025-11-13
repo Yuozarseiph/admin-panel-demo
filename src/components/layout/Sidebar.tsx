@@ -14,23 +14,34 @@ import {
   Settings,
   LogOut,
   HomeIcon,
+  ChevronDown,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-const items = [
+type NavIcon = React.ComponentType<{ size?: number; className?: string }>;
+type NavLeaf = { label: string; href: string; icon?: NavIcon; badge?: string };
+type NavGroup = { label: string; href: string; icon: NavIcon; children?: NavLeaf[] };
+type NavItem = NavLeaf | NavGroup;
+
+const items: NavItem[] = [
   { label: "داشبورد", href: "/", icon: HomeIcon },
   { label: "هوش مصنوعی", href: "/ai", icon: BrainCircuit },
-  { label: "مشتریان", href: "/customers", icon: Users },
-  { label: "کمپین‌های فروش", href: "/sales/campaigns", icon: Megaphone },
   {
-    label: "فروش و بازاریابی",
-    href: "/sales-marketing",
-    icon: PresentationIcon,
+    label: "مشتریان",
+    href: "/customers",
+    icon: Users,
+    children: [
+      { label: "همه مشتریان", href: "/customers/all" },
+      // بعداً اینجا زیرمنوهای بیشتری اضافه می‌شود
+    ],
   },
+  { label: "کمپین‌های فروش", href: "/sales/campaigns", icon: Megaphone },
+  { label: "فروش و بازاریابی", href: "/sales-marketing", icon: PresentationIcon },
   { label: "امتیازدهی و سطح‌بندی", href: "/scoring", icon: Medal },
   { label: "گزارشات فروش", href: "/sales/reports", icon: FileBarChart2 },
 ];
-const settings = [{ label: "تنظیمات", href: "/settings", icon: Settings }];
+
+const settings: NavLeaf[] = [{ label: "تنظیمات", href: "/settings", icon: Settings }];
 
 interface SidebarProps {
   open: boolean;
@@ -42,19 +53,43 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
 
   // قفل اسکرول در موبایل وقتی منو باز است
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
 
-  const NavItem = ({ href, label, Icon, badge }: any) => {
-    const active =
-      pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+  // باز/بسته بودن گروه‌ها بر اساس مسیر فعلی
+  const initiallyOpen = useMemo(() => {
+    const map = new Map<string, boolean>();
+    items.forEach((it) => {
+      if ("children" in it && it.children?.length) {
+        const activeUnderGroup =
+          pathname === it.href || pathname.startsWith(it.href + "/");
+        map.set(it.href, activeUnderGroup);
+      }
+    });
+    return map;
+  }, [pathname]);
+
+  const [openGroups, setOpenGroups] = useState(initiallyOpen);
+  useEffect(() => setOpenGroups(initiallyOpen), [initiallyOpen]);
+
+  const toggleGroup = (href: string) =>
+    setOpenGroups((m) => new Map(m).set(href, !m.get(href)));
+
+  const NavLeafItem = ({
+    href,
+    label,
+    Icon,
+    badge,
+  }: {
+    href: string;
+    label: string;
+    Icon?: NavIcon | null;
+    badge?: string;
+  }) => {
+    const active = pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
     return (
       <li>
         <Link
@@ -68,12 +103,76 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
           ].join(" ")}
         >
-          <Icon
-            size={18}
-            className="block text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
-          />
+          {Icon ? (
+            <Icon
+              size={18}
+              className="block text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+            />
+          ) : null}
           <span className="block truncate">{label}</span>
+          {badge ? (
+            <span className="ms-auto rounded-full bg-sky-100 px-2 py-0.5 text-[10px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
+              {badge}
+            </span>
+          ) : null}
         </Link>
+      </li>
+    );
+  };
+
+  const NavGroupItem = ({
+    label,
+    href,
+    Icon,
+    children = [],
+  }: {
+    label: string;
+    href: string;
+    Icon: NavIcon;
+    children?: NavLeaf[];
+  }) => {
+    const expanded = openGroups.get(href) ?? false;
+    const groupActive =
+      pathname === href ||
+      pathname.startsWith(href + "/") ||
+      children.some((c) => pathname.startsWith(c.href));
+    return (
+      <li>
+        <button
+          onClick={() => toggleGroup(href)}
+          className={[
+            "w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors",
+            groupActive
+              ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
+              : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
+          ].join(" ")}
+          aria-expanded={expanded}
+          aria-controls={`grp-${href}`}
+        >
+          <span className="flex items-center gap-2">
+            <Icon
+              size={18}
+              className="text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+            />
+            <span className="truncate">{label}</span>
+          </span>
+          <ChevronDown
+            size={16}
+            className={["transition-transform", expanded ? "rotate-180" : "rotate-0"].join(" ")}
+          />
+        </button>
+
+        <ul
+          id={`grp-${href}`}
+          className={[
+            "ms-8 mt-1 space-y-1 overflow-hidden transition-[max-height]",
+            expanded ? "max-h-96" : "max-h-0",
+          ].join(" ")}
+        >
+          {children.map((c) => (
+            <NavLeafItem key={c.href} href={c.href} label={c.label} Icon={null} />
+          ))}
+        </ul>
       </li>
     );
   };
@@ -109,31 +208,42 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
               <X size={18} />
             </button>
           </div>
+
           <div className="mb-2 px-2 text-[10px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
             نمای کلی
           </div>
 
           <ul className="space-y-1">
-            {items.map((i) => (
-              <NavItem
-                key={i.href}
-                href={i.href}
-                label={i.label}
-                Icon={i.icon}
-                badge={(i as any).badge}
-              />
-            ))}
+            {items.map((i) =>
+              "children" in i && i.children?.length ? (
+                <NavGroupItem
+                  key={i.href}
+                  label={i.label}
+                  href={i.href}
+                  Icon={(i as NavGroup).icon}         // پاس صریح آیکن
+                  children={(i as NavGroup).children}
+                />
+              ) : (
+                <NavLeafItem
+                  key={(i as NavLeaf).href}
+                  href={(i as NavLeaf).href}
+                  label={(i as NavLeaf).label}
+                  Icon={(i as NavLeaf).icon ?? null}   // پاس صریح آیکن
+                  badge={(i as NavLeaf).badge}
+                />
+              )
+            )}
           </ul>
 
           <div className="my-4 h-px bg-gray-200 dark:bg-gray-800" />
 
           <ul className="space-y-1">
             {settings.map((i) => (
-              <NavItem
+              <NavLeafItem
                 key={i.href}
                 href={i.href}
                 label={i.label}
-                Icon={i.icon}
+                Icon={i.icon ?? null}
               />
             ))}
           </ul>
@@ -141,11 +251,12 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           <div className="mt-auto pt-3">
             <Link
               href="/logout"
+              onClick={onClose}
               className="group gap-2 flex items-center rounded-lg px-3 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
             >
               <LogOut
                 size={18}
-                className=" shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                className="shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
               />
               <span className="truncate">خروج</span>
             </Link>
