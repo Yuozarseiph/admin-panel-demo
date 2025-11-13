@@ -9,9 +9,7 @@ import { Fragment } from "react";
 import { currentUser } from "@/data/user";
 
 type HeaderProps = {
-  // اگر سایدبار موبایل دارید، این هندلر را از لایه والد پاس دهید
   onMenuToggle?: () => void;
-  // عنوان دلخواه (اختیاری)
   title?: string;
 };
 
@@ -19,8 +17,7 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
   const { name, email, avatar, notificationsCount, inboxCount } = currentUser;
 
   return (
-    <div className="flex w-full items-center justify-between">
-      {/* دکمه همبرگر: فقط موبایل */}
+    <div className="flex w-full max-w-dvw items-center justify-between pl-10">
       <div className="flex items-center gap-2">
         <button
           type="button"
@@ -34,7 +31,6 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
       </div>
 
       <div className="flex items-center gap-1.5">
-        {/* اعلان‌ها */}
         <Link
           href="/notifications"
           aria-label="اعلان‌ها"
@@ -47,8 +43,6 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
             </span>
           )}
         </Link>
-
-        {/* ایمیل‌ها */}
         <Link
           href="/inbox"
           aria-label="ایمیل‌ها"
@@ -61,8 +55,6 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
             </span>
           )}
         </Link>
-
-        {/* پروفایل */}
         <Popover className="relative">
           <Popover.Button
             aria-label="پروفایل"
@@ -88,7 +80,6 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
             leaveTo="opacity-0 translate-y-1 scale-95"
           >
             <Popover.Panel className="absolute end-0 z-50 mt-2 w-72 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
-              {/* سربرگ منو */}
               <div className="flex items-center justify-between p-3">
                 <div className="text-end">
                   <div className="text-sm font-extrabold">{name}</div>
@@ -104,8 +95,6 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
               </div>
 
               <div className="h-px bg-gray-200 dark:bg-gray-800" />
-
-              {/* آیتم‌ها */}
               <div className="py-1">
                 <Link href="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
                   پروفایل من
@@ -119,13 +108,10 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
               </div>
 
               <div className="h-px bg-gray-200 dark:bg-gray-800" />
-
-              {/* خروج */}
               <div className="p-2">
                 <button
                   className="w-full rounded-md px-4 py-2 text-center text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
                   onClick={() => {
-                    // TODO: اتصال به اکشن خروج واقعی
                   }}
                 >
                   خروج از حساب

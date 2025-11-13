@@ -16,13 +16,13 @@ export default function IranMapCard() {
       </div>
 
       <div className="w-full overflow-x-auto">
-        <div className="mx-auto max-w-[900px]">
+        <div className="mx-auto w-100 lg:w-full max-h-svh md:h-screen">
           <IranMap
             data={iranProvincesData}
-            colorRange="20, 120, 200"
+            colorRange="20, 120, 150"
             width={900}
-            textColor="#6b7280"
-            defaultSelectedProvince="tehran"
+            textColor="#ffffff"
+            defaultSelectedProvince=""
             deactiveProvinceColor="#f1f5f9"
             selectedProvinceColor="#10b981"
             tooltipTitle="فعال:"

@@ -1,9 +1,8 @@
-// app/layout.tsx
+// app/layout.tsx (اصلاح نهایی)
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import Providers from "./providers";
-import AppShell from "./shell";
 
 export const metadata: Metadata = {
   title: "پنل مدیریت فارسی",
@@ -18,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="min-h-screen bg-gray-50 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
         <Providers>
-          <AppShell>{children}</AppShell>
+          {children}              {/* فقط children */}
           <Toaster position="top-center" />
         </Providers>
       </body>

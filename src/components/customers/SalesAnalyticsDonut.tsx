@@ -12,7 +12,7 @@ const data = [
 export default function SalesAnalyticsDonut() {
   const total = data.reduce((a, b) => a + b.value, 0);
   return (
-    <div className="relative rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 h-[360px]">
+    <div className="relative rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 h-100">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold">تحلیل فروش</h2>
         <div className="text-xs text-gray-500 dark:text-gray-400">روزانه</div>

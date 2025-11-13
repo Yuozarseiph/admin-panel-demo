@@ -1,20 +1,19 @@
-// app/customers/page.tsx
-
-// ویجت‌ها
+// app/page.tsx
 import CustomerKPIs from "@/components/customers/CustomerKPIs";
 import SalesAnalyticsDonut from "@/components/customers/SalesAnalyticsDonut";
 import CustomerGrowthSummary from "@/components/customers/CustomerGrowthSummary";
 import CustomerListTable from "@/components/customers/CustomerListTable";
 import PlatformsDonut from "@/components/customers/PlatformsDonut";
-import RevenueGrowthLine from "@/components/customers/RevenueGrowthLine";
 import SalesPerformanceBars from "@/components/customers/SalesPerformanceBars";
 import RatingAnalyticsRings from "@/components/customers/RatingAnalyticsRings";
 import CustomerActivityGauge from "@/components/customers/CustomerActivityGauge";
 import ProvincesAndCountriesCard from "@/components/customers/ProvincesAndCountriesCard";
+import TotalAppointment from "@/components/customers/Analitics";
+import PatientAppointmentFa from "@/components/customers/Analitics";
 
-export default function CustomersPage() {
+export default function Page() {
   return (
-    <main className="space-y-4">
+    <main className="space-y-4 max-w-svw overflow-x-hidden">
       <CustomerKPIs />
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -37,18 +36,22 @@ export default function CustomersPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <RevenueGrowthLine />
+          <PatientAppointmentFa />
         </div>
         <div className="lg:col-span-1">
-          <SalesPerformanceBars />
+          <CustomerActivityGauge />
         </div>
       </div>
 
       <ProvincesAndCountriesCard />
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <RatingAnalyticsRings />
-        <CustomerActivityGauge />
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <SalesPerformanceBars />
+        </div>
+        <div className="lg:col-span-1">
+          <RatingAnalyticsRings />
+        </div>
       </div>
     </main>
   );

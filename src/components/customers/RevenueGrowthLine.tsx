@@ -17,7 +17,7 @@ const data = [
 
 export default function RevenueGrowthLine() {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 h-[360px]">
+    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 lg:h-100">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold">رشد درآمد</h2>
         <span className="text-xs text-gray-500 dark:text-gray-400">گزارش سالانه</span>

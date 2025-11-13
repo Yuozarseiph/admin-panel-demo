@@ -13,7 +13,7 @@ const pct = {
 
 export default function RatingAnalyticsRings() {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 lg:h-100">
       <div className="mb-3 text-sm font-semibold">تحلیل امتیازدهی</div>
 
       <div className="grid items-center gap-4 md:grid-cols-2">

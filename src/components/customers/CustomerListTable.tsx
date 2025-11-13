@@ -57,7 +57,7 @@ const columns: ColumnDef<Row>[] = [
 export default function CustomerListTable() {
   const table = useReactTable({ data: rows, columns, getCoreRowModel: getCoreRowModel() });
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 h-100">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold">فهرست مشتریان</h2>
       </div>

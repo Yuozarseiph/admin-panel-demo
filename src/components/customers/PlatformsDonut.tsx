@@ -6,7 +6,7 @@ import { platformShare } from "@/data/customers";
 
 export default function PlatformsDonut() {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+    <div className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 lg:h-100">
       <div className="mb-3 text-sm font-semibold">منطقه مشتریان بر اساس پلتفرم</div>
       <div className="h-[380px] w-full">
         <ResponsiveContainer width="100%" height="100%">
