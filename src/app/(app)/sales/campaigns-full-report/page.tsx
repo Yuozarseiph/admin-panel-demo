@@ -60,7 +60,7 @@ function KPIWithCircle({
   track,
 }: { title: string; valueText: string; percent: number; color: string; track?: string }) {
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-gray-200 p-4 dark:border-gray-800">
+    <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 p-4">
       <Circle value={percent} color={color} track={track} />
       <div className="grow">
         <div className="text-[14px] text-gray-500">{title}</div>
@@ -108,8 +108,8 @@ export default function CampaignsFullReport() {
           <IconCard title="کمپین‌های پر بازده" valueText={toFa(top.highROI)} Icon={TrendingUp} tint="bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-300" />
         </div>
       </section>
-      <section className="rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
-        <div className="px-5 py-5">
+      <section className="rounded-xl ">
+        <div className=" py-5">
           <h2 className="mb-4 text-[16px] font-semibold text-gray-700 dark:text-gray-200">تعداد کل فروش در کمپین‌ها</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <KPIWithCircle title="تعداد کل سفارشات" valueText={toFa(stats.ordersCount)} percent={stats.ordersPercent} color="#ef4444" track="#FFE9E9" />
