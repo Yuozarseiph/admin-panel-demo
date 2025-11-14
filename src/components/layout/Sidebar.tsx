@@ -27,8 +27,12 @@ import {
   UsersRound,
   PlusCircle,
   BarChart3,
+  Ticket,
+  TicketCheck,
+  TicketPlus,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 type NavIcon = React.ComponentType<{ size?: number; className?: string }>;
 type NavLeaf = { label: string; href: string; icon?: NavIcon; badge?: string };
@@ -39,6 +43,7 @@ type NavGroup = {
   children?: NavLeaf[];
 };
 type NavItem = NavLeaf | NavGroup;
+
 const items: NavItem[] = [
   { label: "داشبورد", href: "/", icon: HomeIcon },
   { label: "هوش مصنوعی", href: "/ai", icon: BrainCircuit },
@@ -98,7 +103,11 @@ const items: NavItem[] = [
         href: "/sales-marketing/send-lists",
         icon: ListChecks,
       },
-      { label: "هوش مصنوعی بازاریابی", href: "/sales-marketing/ai", icon: Bot },
+      {
+        label: "هوش مصنوعی بازاریابی",
+        href: "/sales-marketing/ai",
+        icon: Bot,
+      },
     ],
   },
 
@@ -119,9 +128,9 @@ const items: NavItem[] = [
     href: "/support",
     icon: MessageSquare,
     children: [
-      { label: "همه تیکت‌ها", href: "/support/tickets" },
-      { label: "تیکت‌های باز", href: "/support/open" },
-      { label: "ایجاد تیکت", href: "/support/new" },
+      { label: "همه تیکت‌ها", href: "/support/tickets", icon: Ticket },
+      { label: "تیکت‌های باز", href: "/support/open", icon: TicketCheck },
+      { label: "ایجاد تیکت", href: "/support/new", icon: TicketPlus },
     ],
   },
 ];
@@ -137,6 +146,7 @@ interface SidebarProps {
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
   const pathname = usePathname();
+
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -153,12 +163,14 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         .map((g) => g.href),
     []
   );
+
   const defaultOpenKey = useMemo(() => {
     const hit = groupKeys.find(
       (g) => pathname === g || pathname.startsWith(g + "/")
     );
     return hit ?? null;
   }, [pathname, groupKeys]);
+
   const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey);
   useEffect(() => setOpenKey(defaultOpenKey), [defaultOpenKey]);
 
@@ -185,7 +197,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           onClick={onClose}
           aria-current={active ? "page" : undefined}
           className={[
-            "flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[16px] transition-colors",
+            "group flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[16px] transition-colors",
             active
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
@@ -230,7 +242,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         <button
           onClick={() => toggleGroup(href)}
           className={[
-            "w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[16px] transition-colors",
+            "group w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[16px] transition-colors",
             groupActive
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
@@ -248,28 +260,43 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           <ChevronDown
             size={18}
             className={[
-              "transition-transform",
+              "transition-transform duration-200",
               expanded ? "rotate-180" : "rotate-0",
             ].join(" ")}
           />
         </button>
 
-        <ul
-          id={`grp-${href}`}
-          className={[
-            "ms-8 mt-1 space-y-1 overflow-hidden transition-[max-height]",
-            expanded ? "max-h-96" : "max-h-0",
-          ].join(" ")}
-        >
-          {children.map((c) => (
-            <NavLeafItem
-              key={c.href}
-              href={c.href}
-              label={c.label}
-              Icon={c.icon ?? null}
-            />
-          ))}
-        </ul>
+        {/* رپر انیمیشنی با Framer Motion */}
+        <AnimatePresence initial={false}>
+          {expanded && (
+            <motion.div
+              key={href}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="overflow-hidden"
+            >
+              <ul
+                id={`grp-${href}`}
+                className={[
+                  "ms-8 mt-1 space-y-1 overflow-hidden",
+                  "transition-[max-height] duration-300 ease-out",
+                  expanded ? "max-h-96" : "max-h-0",
+                ].join(" ")}
+              >
+                {children.map((c) => (
+                  <NavLeafItem
+                    key={c.href}
+                    href={c.href}
+                    label={c.label}
+                    Icon={c.icon ?? null}
+                  />
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </li>
     );
   };
