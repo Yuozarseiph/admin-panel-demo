@@ -59,19 +59,19 @@ const items: NavItem[] = [
 
   {
     label: "کمپین‌های فروش",
-    href: "/sales",
+    href: "/campaigns",
     icon: Megaphone,
     children: [
-      { label: "لیست کمپین ها", href: "/sales/campaigns", icon: ListChecks },
-      { label: "کمپین جدید", href: "/sales/new-campaigns", icon: PlusCircle },
+      { label: "لیست کمپین ها", href: "/campaigns/list-campaigns", icon: ListChecks },
+      { label: "کمپین جدید", href: "/campaigns/new-campaigns", icon: PlusCircle },
       {
         label: "ساخت کمپین با هوش مصنوعی",
-        href: "/sales/new-campaigns-ai",
+        href: "/campaigns/new-campaigns-ai",
         icon: Bot,
       },
       {
         label: "گزارش کلی کمپین ها",
-        href: "/sales/campaigns-full-report",
+        href: "/campaigns/campaigns-full-report",
         icon: BarChart3,
       },
     ],
