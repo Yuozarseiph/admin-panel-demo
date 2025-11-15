@@ -3,6 +3,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Collapse } from "rizzui";
+import {cn} from "@/lib/utils";
 import {
   X,
   BrainCircuit,
@@ -31,7 +33,7 @@ import {
   TicketCheck,
   TicketPlus,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect } from "react";
 
 type NavIcon = React.ComponentType<{ size?: number; className?: string }>;
 type NavLeaf = { label: string; href: string; icon?: NavIcon; badge?: string };
@@ -64,16 +66,8 @@ const items: NavItem[] = [
     children: [
       { label: "لیست کمپین ها", href: "/campaigns/list-campaigns", icon: ListChecks },
       { label: "کمپین جدید", href: "/campaigns/new-campaigns", icon: PlusCircle },
-      {
-        label: "ساخت کمپین با هوش مصنوعی",
-        href: "/campaigns/new-campaigns-ai",
-        icon: Bot,
-      },
-      {
-        label: "گزارش کلی کمپین ها",
-        href: "/campaigns/campaigns-full-report",
-        icon: BarChart3,
-      },
+      { label: "ساخت کمپین با هوش مصنوعی", href: "/campaigns/new-campaigns-ai", icon: Bot },
+      { label: "گزارش کلی کمپین ها", href: "/campaigns/campaigns-full-report", icon: BarChart3 },
     ],
   },
 
@@ -82,26 +76,10 @@ const items: NavItem[] = [
     href: "/sales-marketing",
     icon: PresentationIcon,
     children: [
-      {
-        label: "اطلاع رسانی سریع",
-        href: "/sales-marketing/quick-broadcast",
-        icon: BellRing,
-      },
-      {
-        label: "پروموشن و تخفیف",
-        href: "/sales-marketing/promotions",
-        icon: PercentIcon,
-      },
-      {
-        label: "آفرهای لحظه ای",
-        href: "/sales-marketing/flash-offers",
-        icon: Flashlight,
-      },
-      {
-        label: "ساخت لیست ارسال",
-        href: "/sales-marketing/send-lists",
-        icon: ListChecks,
-      },
+      { label: "اطلاع رسانی سریع", href: "/sales-marketing/quick-broadcast", icon: BellRing },
+      { label: "پروموشن و تخفیف", href: "/sales-marketing/promotions", icon: PercentIcon },
+      { label: "آفرهای لحظه ای", href: "/sales-marketing/flash-offers", icon: Flashlight },
+      { label: "ساخت لیست ارسال", href: "/sales-marketing/send-lists", icon: ListChecks },
     ],
   },
 
@@ -148,138 +126,115 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     };
   }, [open]);
 
-  const groupKeys = useMemo(
-    () =>
-      items
-        .filter(
-          (it): it is NavGroup => "children" in it && !!it.children?.length
-        )
-        .map((g) => g.href),
-    []
-  );
-
-  const defaultOpenKey = useMemo(() => {
-    const hit = groupKeys.find(
-      (g) => pathname === g || pathname.startsWith(g + "/")
-    );
-    return hit ?? null;
-  }, [pathname, groupKeys]);
-
-  const [openKey, setOpenKey] = useState<string | null>(defaultOpenKey);
-  useEffect(() => setOpenKey(defaultOpenKey), [defaultOpenKey]);
-
-  const toggleGroup = (href: string) =>
-    setOpenKey((cur) => (cur === href ? null : href));
-
   const NavLeafItem = ({
     href,
     label,
-    Icon,
+    icon: Icon,
     badge,
-  }: {
-    href: string;
-    label: string;
-    Icon?: NavIcon | null;
-    badge?: string;
-  }) => {
+    isChild = false,
+  }: NavLeaf & { icon?: NavIcon; isChild?: boolean }) => {
     const active =
       pathname === href || (href !== "/" && pathname.startsWith(href + "/"));
+
     return (
-      <li>
-        <Link
-          href={href}
-          onClick={onClose}
-          aria-current={active ? "page" : undefined}
-          className={[
-            "group flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] transition-colors",
-            active
-              ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
-              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
-          ].join(" ")}
-        >
+      <Link
+        href={href}
+        onClick={onClose}
+        className={cn(
+          "group relative flex items-center justify-between rounded-md px-3 py-2 font-medium capitalize transition-colors duration-200",
+          isChild ? "mx-3.5 mb-0.5 last-of-type:mb-1 lg:last-of-type:mb-2 2xl:mx-5" : "mx-3 my-0.5 lg:my-1 2xl:mx-5 2xl:my-2",
+          active
+            ? `${!isChild ? "before:top-2/5 before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-emerald-500 2xl:before:-start-5" : ""} text-emerald-600 dark:text-emerald-400`
+            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200"
+        )}
+      >
+        <div className="flex items-center truncate">
           {Icon ? (
-            <Icon
-              size={18}
-              className="block text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
-            />
-          ) : null}
-          <span className="block truncate leading-6">{label}</span>
-          {badge ? (
-            <span className="ms-auto rounded-full bg-sky-100 px-2.5 py-0.5 text-[11px] sm:text-[12px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
-              {badge}
+            <span
+              className={cn(
+                "inline-flex items-center justify-center rounded-md",
+                isChild 
+                  ? cn(
+                      "me-[18px] ms-1 h-1 w-1 rounded-full bg-current transition-all duration-200",
+                      active ? "bg-emerald-500 ring-[1px] ring-emerald-500" : "opacity-40"
+                    )
+                  : cn(
+                      "me-2 size-5 [&>svg]:size-5",
+                      active ? "text-emerald-500" : "text-gray-800 dark:text-gray-200 dark:group-hover:text-gray-700"
+                    )
+              )}
+            >
+              {!isChild && <Icon size={20} />}
             </span>
           ) : null}
-        </Link>
-      </li>
+          <span className="truncate">{label}</span>
+        </div>
+
+        {badge ? (
+          <span className="ms-auto rounded-full bg-sky-100 px-2 py-0.5 text-xs text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
+            {badge}
+          </span>
+        ) : null}
+      </Link>
     );
   };
 
-  const NavGroupItem = ({
-    label,
-    href,
-    Icon,
-    children = [],
-  }: {
-    label: string;
-    href: string;
-    Icon: NavIcon;
-    children?: NavLeaf[];
-  }) => {
-    const expanded = openKey === href;
-    const groupActive =
+  const NavGroupItem = ({ label, href, icon: Icon, children = [] }: NavGroup) => {
+    const isDropdownOpen =
       pathname === href ||
       pathname.startsWith(href + "/") ||
-      children.some((c) => pathname.startsWith(c.href));
+      children?.some((c) => pathname.startsWith(c.href));
 
     return (
-      <li>
-        <button
-          onClick={() => toggleGroup(href)}
-          className={[
-            "group w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] transition-colors",
-            groupActive
-              ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
-              : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
-          ].join(" ")}
-          aria-expanded={expanded}
-          aria-controls={`grp-${href}`}
-        >
-          <span className="flex items-center gap-2">
-            <Icon
-              size={18}
-              className="text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
-            />
-            <span className="truncate leading-6">{label}</span>
-          </span>
-          <ChevronDown
-            size={16}
-            className={[
-              "transition-transform duration-200",
-              expanded ? "rotate-180" : "rotate-0",
-            ].join(" ")}
-          />
-        </button>
+      <Collapse
+        defaultOpen={isDropdownOpen}
+        header={({ open, toggle }) => (
+          <div
+            onClick={toggle}
+            className={cn(
+              "group relative mx-3 flex cursor-pointer items-center justify-between rounded-md px-3 py-2 font-medium lg:my-1 2xl:mx-5 2xl:my-2",
+              isDropdownOpen
+                ? "before:top-2/5 text-emerald-600 dark:text-emerald-400 before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-emerald-500 2xl:before:-start-5"
+                : "text-gray-700 transition-colors duration-200 hover:bg-gray-100 dark:text-gray-200 dark:hover:text-gray-700"
+            )}
+          >
+            <span className="flex items-center">
+              {Icon && (
+                <span
+                  className={cn(
+                    "me-2 inline-flex h-5 w-5 items-center justify-center rounded-md [&>svg]:h-[20px] [&>svg]:w-[20px]",
+                    isDropdownOpen
+                      ? "text-emerald-500"
+                      : "text-gray-800 dark:text-gray-500 dark:group-hover:text-gray-700"
+                  )}
+                >
+                  <Icon size={20} />
+                </span>
+              )}
+              {label}
+            </span>
 
-        <ul
-          id={`grp-${href}`}
-          className={[
-            "ms-8 mt-1 space-y-1 overflow-hidden",
-            "transition-[max-height,opacity,transform] duration-300 ease-out",
-            expanded
-              ? "max-h-96 opacity-100 translate-y-0"
-              : "max-h-0 opacity-0 -translate-y-1",
-          ].join(" ")}
-        >
-          {children.map((c) => (
-            <NavLeafItem
-              key={c.href}
-              href={c.href}
-              label={c.label}
-              Icon={c.icon ?? null}
+            <ChevronDown
+              strokeWidth={3}
+              className={cn(
+                "h-3.5 w-3.5 -rotate-90 text-gray-500 transition-transform duration-200 rtl:rotate-90",
+                open && "rotate-0 rtl:rotate-0"
+              )}
             />
-          ))}
-        </ul>
-      </li>
+          </div>
+        )}
+      >
+        {children?.map((dropdownItem) => (
+          <NavLeafItem
+            key={dropdownItem.href}
+            href={dropdownItem.href}
+            label={dropdownItem.label}
+            icon={dropdownItem.icon}
+            badge={dropdownItem.badge}
+            isChild={true}
+          />
+        ))}
+      </Collapse>
     );
   };
 
@@ -287,80 +242,75 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     <>
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden"
           onClick={onClose}
-          aria-hidden="true"
         />
       )}
+
       <aside
-        className={[
-          "fixed right-0 top-0 z-50 h-full w-72 transform border-l border-gray-200 bg-white transition-transform duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900",
-          "lg:static lg:translate-x-0",
-          open ? "translate-x-0" : "translate-x-full",
-        ].join(" ")}
-        aria-hidden={!open}
+        className={cn(
+          "fixed right-0 top-0 z-50 h-full w-72 border-l border-gray-200 bg-white shadow-xl transition-transform duration-300 ease-in-out dark:border-gray-800 dark:bg-gray-900",
+          "lg:static lg:translate-x-0 lg:shadow-none",
+          open ? "translate-x-0" : "translate-x-full"
+        )}
       >
-        <nav className="flex h-full flex-col p-3 text-[13px] sm:text-[14px]">
+        <nav className="flex h-full flex-col p-3 text-sm">
           <div className="mb-4 flex items-center justify-between lg:hidden">
             <button
               onClick={onClose}
-              aria-label="بستن منو"
-              className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              className="rounded-lg p-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
             >
               <X size={18} />
             </button>
           </div>
 
-          <div className="mb-2 px-2 text-[11px] sm:text-[12px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
+          <div className="mb-2 px-4 text-xs font-medium tracking-widest text-gray-500 dark:text-gray-400">
             نمای کلی
           </div>
 
-          <ul className="space-y-1">
-            {items.map((i) =>
-              "children" in i && i.children?.length ? (
+          <div className="mt-4 pb-3 3xl:mt-6 flex-1 overflow-y-auto">
+            {items.map((item) =>
+              "children" in item ? (
                 <NavGroupItem
-                  key={i.href}
-                  label={i.label}
-                  href={i.href}
-                  Icon={(i as NavGroup).icon}
-                  children={(i as NavGroup).children}
+                  key={item.href}
+                  label={item.label}
+                  href={item.href}
+                  icon={item.icon}
+                  children={item.children}
                 />
               ) : (
                 <NavLeafItem
-                  key={(i as NavLeaf).href}
-                  href={(i as NavLeaf).href}
-                  label={(i as NavLeaf).label}
-                  Icon={(i as NavLeaf).icon ?? null}
-                  badge={(i as NavLeaf).badge}
+                  key={item.href}
+                  href={item.href}
+                  label={item.label}
+                  icon={item.icon}
                 />
               )
             )}
-          </ul>
+          </div>
 
           <div className="my-4 h-px bg-gray-200 dark:bg-gray-800" />
 
-          <ul className="space-y-1">
-            {settings.map((i) => (
-              <NavLeafItem
-                key={i.href}
-                href={i.href}
-                label={i.label}
-                Icon={i.icon ?? null}
-              />
-            ))}
-          </ul>
+          {settings.map((i) => (
+            <NavLeafItem
+              key={i.href}
+              href={i.href}
+              label={i.label}
+              icon={i.icon}
+            />
+          ))}
 
           <div className="mt-auto pt-3">
             <Link
               href="/logout"
               onClick={onClose}
-              className="group flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="group mx-3 flex items-center gap-2 rounded-md px-3 py-2.5 font-medium text-gray-700 transition-colors duration-200 hover:bg-red-50 hover:text-red-600 dark:text-gray-400 dark:hover:bg-red-900/10 dark:hover:text-red-400 2xl:mx-5"
             >
               <LogOut
                 size={18}
-                className="shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
+                className="text-gray-400 transition-colors group-hover:text-red-500 dark:text-gray-500 dark:group-hover:text-red-400"
               />
-              <span className="truncate leading-6">خروج</span>
+              <span className="truncate">خروج</span>
             </Link>
           </div>
         </nav>
