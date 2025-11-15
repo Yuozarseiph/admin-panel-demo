@@ -32,9 +32,7 @@ export default function Header({
         >
           <Menu size={18} />
         </button>
-        <h1 className="text-[13px] sm:text-[14px] font-semibold">
-          {title}
-        </h1>
+        <h1 className="text-[13px] sm:text-[14px] font-semibold">{title}</h1>
       </div>
       <div className="flex items-center gap-3">
         <Popover className="relative">
@@ -60,16 +58,8 @@ export default function Header({
             leaveFrom="opacity-100 translate-y-0 scale-100"
             leaveTo="opacity-0 translate-y-1 scale-95"
           >
-            <Popover.Panel className="absolute end-0 z-50 mt-2 w-72 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
-              <div className="flex items-center justify-between p-3">
-                <div className="text-end">
-                  <div className="text-[13px] font-extrabold">
-                    {name}
-                  </div>
-                  <div className="text-[11px] text-gray-500 dark:text-gray-400">
-                    {email}
-                  </div>
-                </div>
+            <Popover.Panel className="absolute -start-5 z-50 mt-2 w-50 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-800 dark:bg-gray-900">
+              <div className="flex items-center justify-start gap-2 p-3">
                 <Image
                   src={avatar}
                   alt={name}
@@ -77,6 +67,12 @@ export default function Header({
                   height={36}
                   className="rounded-full ring-1 ring-gray-200 dark:ring-gray-700"
                 />
+                <div className="text-start">
+                  <div className="text-[13px] font-extrabold">{name}</div>
+                  <div className="text-[11px] text-gray-500 dark:text-gray-400">
+                    {email}
+                  </div>
+                </div>
               </div>
 
               <div className="h-px bg-gray-200 dark:bg-gray-800" />
