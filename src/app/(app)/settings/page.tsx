@@ -205,7 +205,7 @@ export default function SettingsPage() {
             {/* Steps row: سه کارت هم‌اندازه + فلش بینشان */}
             <div className="grid items-stretch gap-4 xl:grid-cols-[2fr_64px_1.5fr_64px_1fr]">
               {/* Step 1 */}
-              <div className="flex h-full min-h-[180px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+              <div className="flex flex-row-reverse h-full min-h-[180px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
                 <div className="flex-1 p-5">
                   <div className="mb-5 flex items-center justify-between gap-3">
                     <button
@@ -254,7 +254,7 @@ export default function SettingsPage() {
                   )}
                 </div>
                 <div className="flex w-20 items-center justify-center bg-gray-50 dark:bg-gray-800">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-300 dark:bg-gray-700 dark:text-gray-500">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-500">
                     {toFa(1)}
                   </div>
                 </div>
@@ -268,7 +268,7 @@ export default function SettingsPage() {
               </div>
 
               {/* Step 2 */}
-              <div className="flex  h-full min-h-[180px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+              <div className="flex flex-row-reverse h-full min-h-[180px] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
                 {/* محتوا */}
                 <div className="flex-1 p-5">
                   <button
@@ -307,7 +307,7 @@ export default function SettingsPage() {
 
                 {/* ستون شماره در چپ کارت */}
                 <div className="flex w-20 items-center justify-center bg-gray-50 dark:bg-gray-800">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-300 dark:bg-gray-700 dark:text-gray-500">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-100 text-2xl font-bold text-gray-600 dark:bg-gray-700 dark:text-gray-500">
                     {toFa(2)}
                   </div>
                 </div>
