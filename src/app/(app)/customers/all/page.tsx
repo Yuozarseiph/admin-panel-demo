@@ -2,8 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { FileText, Download } from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { FileText, Download, Loader2 } from "lucide-react";
 import {
   customersAll,
   type CustomerRow,
@@ -46,12 +46,24 @@ type SortKey = keyof Pick<
 
 export default function CustomersListPage() {
   const [q, setQ] = useState("");
+  const [debouncedQ, setDebouncedQ] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const [level, setLevel] = useState<MemberLevel | "همه">("همه");
   const [status, setStatus] = useState<MemberStatus | "همه">("همه");
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [page, setPage] = useState(0);
   const pageSize = 10;
+
+  // Debounce search
+  useEffect(() => {
+    setIsSearching(true);
+    const timer = setTimeout(() => {
+      setDebouncedQ(q);
+      setIsSearching(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [q]);
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) setSortDir(sortDir === "asc" ? "desc" : "asc");
@@ -62,7 +74,7 @@ export default function CustomersListPage() {
   };
 
   const filtered = useMemo(() => {
-    const qn = q.trim();
+    const qn = debouncedQ.trim();
     return customersAll.filter((r) => {
       const byLevel = level === "همه" ? true : r.level === level;
       const byStatus = status === "همه" ? true : r.status === status;
@@ -72,7 +84,7 @@ export default function CustomersListPage() {
       const okQ = qn ? hay.includes(qn.toLowerCase()) : true;
       return byLevel && byStatus && okQ;
     });
-  }, [q, level, status]);
+  }, [debouncedQ, level, status]);
 
   const sorted = useMemo(() => {
     const arr = [...filtered];
@@ -87,7 +99,8 @@ export default function CustomersListPage() {
     return arr;
   }, [filtered, sortKey, sortDir]);
 
-  const hasSearch = q.trim() !== "" || level !== "همه" || status !== "همه";
+  const hasSearch =
+    debouncedQ.trim() !== "" || level !== "همه" || status !== "همه";
   const limitedData = hasSearch ? sorted : sorted.slice(0, 30);
 
   const total = limitedData.length;
@@ -238,16 +251,21 @@ export default function CustomersListPage() {
                 <option value="مسدود">مسدود</option>
               </select>
 
-              <input
-                dir="rtl"
-                value={q}
-                onChange={(e) => {
-                  setQ(e.target.value);
-                  setPage(0);
-                }}
-                placeholder="جستجو بر اساس نام مشتری…"
-                className="h-9 w-64 rounded-lg border border-gray-300 bg-white px-3 text-[13px] outline-none placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-950 sm:h-10"
-              />
+              <div className="relative">
+                <input
+                  dir="rtl"
+                  value={q}
+                  onChange={(e) => {
+                    setQ(e.target.value);
+                    setPage(0);
+                  }}
+                  placeholder="جستجو بر اساس نام مشتری…"
+                  className="h-9 w-64 rounded-lg border border-gray-300 bg-white px-3 pr-10 text-[13px] outline-none placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-950 sm:h-10"
+                />
+                {isSearching && (
+                  <Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-gray-400" />
+                )}
+              </div>
 
               <button className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 sm:h-10 sm:w-10">
                 <svg
@@ -292,10 +310,29 @@ export default function CustomersListPage() {
             </div>
           )}
 
+          {/* Loading Overlay */}
+          {isSearching && (
+            <div className="flex items-center justify-center gap-2 border-b border-gray-200 bg-blue-50 px-5 py-3 text-[13px] text-blue-700 dark:border-gray-800 dark:bg-blue-900/20 dark:text-blue-400">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>در حال جستجو...</span>
+            </div>
+          )}
+
           {/* Table */}
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
+            {/* Loading Overlay for Table */}
+            {isSearching && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-gray-900/50">
+                <div className="flex flex-col items-center gap-3">
+                  <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+                  <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
+                    در حال بارگذاری...
+                  </span>
+                </div>
+              </div>
+            )}
+
             <table className="w-full">
-              {/* همان thead و tbody قبلی... */}
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50 text-[13px] dark:border-gray-800 dark:bg-gray-800/60">
                   <th
@@ -505,7 +542,7 @@ export default function CustomersListPage() {
                   </tr>
                 ))}
 
-                {data.length === 0 && (
+                {data.length === 0 && !isSearching && (
                   <tr>
                     <td
                       colSpan={8}
@@ -524,7 +561,9 @@ export default function CustomersListPage() {
             <div className="text-[13px] text-gray-600 dark:text-gray-400">
               نمایش {toFa(clampedPage * pageSize + Math.min(1, data.length))}{" "}
               تا {toFa(clampedPage * pageSize + data.length)} از {toFa(total)}
-              {!hasSearch && totalAll > 30 && ` (محدود به 30 از ${toFa(totalAll)})`}
+              {!hasSearch &&
+                totalAll > 30 &&
+                ` (محدود به 30 از ${toFa(totalAll)})`}
             </div>
 
             <div className="flex items-center gap-2">
