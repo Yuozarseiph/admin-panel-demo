@@ -247,12 +247,14 @@ export default function AiActionsPage() {
             ))}
           </div>
         </aside>
+
         <section className="relative grid min-h-0 grid-rows-[auto_1fr_auto] rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2 text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
               <MessageCircle className="h-4 w-4" />
               گفتگو
             </div>
+
             {segment && (
               <div className="hidden items-center gap-2 text-[11px] sm:flex sm:text-[12px]">
                 <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-emerald-600 dark:text-emerald-400">
@@ -269,20 +271,16 @@ export default function AiActionsPage() {
               </div>
             )}
           </div>
+
           <div
             ref={chatScrollRef}
             className="custom-scrollbar relative min-h-0 overflow-y-auto px-4 pb-2"
           >
             <div className="min-h-full rounded-lg border border-gray-200 bg-gray-50 p-3 text-[13px] sm:text-[14px] leading-relaxed dark:border-gray-800 dark:bg-[#0b1220]">
               {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={`mb-3 flex ${
-                    m.role === "user" ? "justify-start" : "justify-end"
-                  }`}
-                >
+                <div key={i} className="mb-3">
                   <div
-                    className={`max-w-[80%] rounded-xl px-3 py-2 text-[13px] sm:text-[14px] leading-relaxed ${
+                    className={`w-auto inline-block rounded-xl px-3 py-2 text-[13px] sm:text-[14px] leading-relaxed ${
                       m.role === "user"
                         ? "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-200"
                         : "bg-sky-100 text-sky-900 dark:bg-sky-900/40 dark:text-sky-100"
@@ -292,6 +290,7 @@ export default function AiActionsPage() {
                   </div>
                 </div>
               ))}
+
               <div className="h-6" />
             </div>
           </div>
@@ -307,6 +306,7 @@ export default function AiActionsPage() {
               >
                 <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
+
               <button
                 aria-label="اعلان"
                 title="ساخت کمپین"
@@ -316,6 +316,7 @@ export default function AiActionsPage() {
               >
                 <Megaphone className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
+
               <button
                 aria-label="دانلود"
                 title="دانلود Excel"
@@ -326,6 +327,7 @@ export default function AiActionsPage() {
                 <Download className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
             </div>
+
             <div className="rounded-lg grow">
               <div className="flex items-center gap-2">
                 <textarea

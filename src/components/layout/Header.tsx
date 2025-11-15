@@ -32,7 +32,7 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
 
       <div className="flex items-center gap-1.5">
         <Link
-          href="/notifications"
+          href="/profile/notifications"
           aria-label="اعلان‌ها"
           className="relative rounded-md p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:hover:bg-gray-800"
         >
@@ -44,7 +44,7 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
           )}
         </Link>
         <Link
-          href="/inbox"
+          href="/profile/inbox"
           aria-label="ایمیل‌ها"
           className="relative rounded-md p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:hover:bg-gray-800"
         >
@@ -99,10 +99,10 @@ export default function Header({ onMenuToggle, title = "پنل مدیریت" }: 
                 <Link href="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
                   پروفایل من
                 </Link>
-                <Link href="/settings/account" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Link href="/profile/settings" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
                   تنظیمات حساب
                 </Link>
-                <Link href="/activity" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Link href="/profile/activity" className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-800">
                   گزارش فعالیت
                 </Link>
               </div>
