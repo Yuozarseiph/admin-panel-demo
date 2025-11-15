@@ -1,14 +1,14 @@
 // app/page.tsx
-import CustomerKPIs from "@/components/customers/CustomerKPIs";
-import SalesAnalyticsDonut from "@/components/customers/SalesAnalyticsDonut";
-import CustomerGrowthSummary from "@/components/customers/CustomerGrowthSummary";
-import CustomerListTable from "@/components/customers/CustomerListTable";
-import PlatformsDonut from "@/components/customers/PlatformsDonut";
-import SalesPerformanceBars from "@/components/customers/SalesPerformanceBars";
-import RatingAnalyticsRings from "@/components/customers/RatingAnalyticsRings";
-import CustomerActivityGauge from "@/components/customers/CustomerActivityGauge";
-import ProvincesAndCountriesCard from "@/components/customers/ProvincesAndCountriesCard";
-import PatientAppointmentFa from "@/components/customers/Analitics";
+import CustomerKPIs from "@/components/dashboard/CustomerKPIs";
+import SalesAnalyticsDonut from "@/components/dashboard/SalesAnalyticsDonut";
+import CustomerGrowthSummary from "@/components/dashboard/CustomerGrowthSummary";
+import CustomerListTable from "@/components/dashboard/CustomerListTable";
+import PlatformsDonut from "@/components/dashboard/PlatformsDonut";
+import SalesPerformanceBars from "@/components/dashboard/SalesPerformanceBars";
+import RatingAnalyticsRings from "@/components/dashboard/RatingAnalyticsRings";
+import CustomerActivityGauge from "@/components/dashboard/CustomerActivityGauge";
+import ProvincesAndCountriesCard from "@/components/dashboard/ProvincesAndCountriesCard";
+import PatientAppointmentFa from "@/components/dashboard/Analitics";
 
 export default function Page() {
   return (

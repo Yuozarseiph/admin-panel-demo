@@ -197,7 +197,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           onClick={onClose}
           aria-current={active ? "page" : undefined}
           className={[
-            "group flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[16px] transition-colors",
+            "group flex items-center justify-start gap-2 rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] transition-colors",
             active
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
@@ -205,13 +205,13 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         >
           {Icon ? (
             <Icon
-              size={20}
+              size={18}
               className="block text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
             />
           ) : null}
           <span className="block truncate leading-6">{label}</span>
           {badge ? (
-            <span className="ms-auto rounded-full bg-sky-100 px-2.5 py-0.5 text-[12px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
+            <span className="ms-auto rounded-full bg-sky-100 px-2.5 py-0.5 text-[11px] sm:text-[12px] text-sky-700 dark:bg-sky-900/30 dark:text-sky-300">
               {badge}
             </span>
           ) : null}
@@ -242,7 +242,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         <button
           onClick={() => toggleGroup(href)}
           className={[
-            "group w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[16px] transition-colors",
+            "group w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] transition-colors",
             groupActive
               ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
               : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white",
@@ -252,13 +252,13 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         >
           <span className="flex items-center gap-2">
             <Icon
-              size={20}
+              size={18}
               className="text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
             />
             <span className="truncate leading-6">{label}</span>
           </span>
           <ChevronDown
-            size={18}
+            size={16}
             className={[
               "transition-transform duration-200",
               expanded ? "rotate-180" : "rotate-0",
@@ -318,18 +318,18 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         ].join(" ")}
         aria-hidden={!open}
       >
-        <nav className="flex h-full flex-col p-3">
+        <nav className="flex h-full flex-col p-3 text-[13px] sm:text-[14px]">
           <div className="mb-4 flex items-center justify-between lg:hidden">
             <button
               onClick={onClose}
               aria-label="بستن منو"
               className="rounded-lg p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
-          <div className="mb-2 px-2 text-[12px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
+          <div className="mb-2 px-2 text-[11px] sm:text-[12px] font-medium tracking-widest text-gray-500 dark:text-gray-400">
             نمای کلی
           </div>
 
@@ -372,10 +372,10 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <Link
               href="/logout"
               onClick={onClose}
-              className="group flex items-center gap-2 rounded-lg px-3 py-2.5 text-[16px] text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="group flex items-center gap-2 rounded-lg px-3 py-2.5 text-[13px] sm:text-[14px] text-gray-700 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
             >
               <LogOut
-                size={20}
+                size={18}
                 className="shrink-0 text-gray-400 group-hover:text-gray-500 dark:text-gray-500 dark:group-hover:text-gray-300"
               />
               <span className="truncate leading-6">خروج</span>

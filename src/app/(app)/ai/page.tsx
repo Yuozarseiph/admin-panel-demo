@@ -217,16 +217,17 @@ export default function AiActionsPage() {
   }, []);
 
   return (
-    <main className="flex h-dvh flex-col overflow-hidden p-4 sm:p-6 text-[14px] sm:text-[15px]">
+    <main className="flex h-dvh flex-col overflow-hidden p-4 sm:p-6 text-[13px] sm:text-[14px]">
       <div className="mb-4">
-        <h1 className="text-[15px] font-semibold text-gray-700 dark:text-gray-300">
+        <h1 className="text-[14px] sm:text-[15px] font-semibold text-gray-700 dark:text-gray-300">
           دستیار بازاریابی
         </h1>
       </div>
 
       <div className="grid flex-1 min-h-0 gap-6 lg:grid-cols-[280px_1fr]">
-        <aside className="rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
-          <div className="mb-3 flex items-center gap-2 text-[13px] text-gray-500 dark:text-gray-400">
+        {/* تاریخچه */}
+        <aside className="rounded-xl border border-gray-200 bg-white p-4 text-[12px] sm:text-[13px] dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
+          <div className="mb-3 flex items-center gap-2 text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
             <Clock className="h-4 w-4" />
             تاریخچه گفتگو
           </div>
@@ -236,10 +237,10 @@ export default function AiActionsPage() {
                 key={h.id}
                 className="group mb-2 w-full rounded-lg border border-gray-200 bg-white p-3 text-right hover:border-sky-500 dark:border-gray-800 dark:bg-gray-950"
               >
-                <div className="mb-1 text-[15px] font-semibold text-gray-800 group-hover:text-sky-600 dark:text-gray-200 dark:group-hover:text-sky-300">
+                <div className="mb-1 text-[13px] sm:text-[14px] font-semibold text-gray-800 group-hover:text-sky-600 dark:text-gray-200 dark:group-hover:text-sky-300">
                   {h.title}
                 </div>
-                <div className="flex items-center justify-between text-[13px] text-gray-500 dark:text-gray-400">
+                <div className="flex items-center justify-between text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
                   <span>{h.summary}</span>
                   <span className="text-gray-400">{h.time}</span>
                 </div>
@@ -248,14 +249,15 @@ export default function AiActionsPage() {
           </div>
         </aside>
 
+        {/* چت و اکشن‌ها */}
         <section className="relative grid min-h-0 grid-rows-[auto_1fr_auto] rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
           <div className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-2 text-[13px] text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
               <MessageCircle className="h-4 w-4" />
               گفتگو
             </div>
             {segment && (
-              <div className="hidden items-center gap-2 text-[13px] sm:flex">
+              <div className="hidden items-center gap-2 text-[11px] sm:flex sm:text-[12px]">
                 <span className="rounded-full bg-emerald-500/10 px-2 py-1 text-emerald-600 dark:text-emerald-400">
                   {segment.count.toLocaleString("fa-IR")} نفر
                 </span>
@@ -271,18 +273,21 @@ export default function AiActionsPage() {
             )}
           </div>
 
+          {/* لیست پیام‌ها */}
           <div
             ref={chatScrollRef}
             className="custom-scrollbar relative min-h-0 overflow-y-auto px-4 pb-2"
           >
-            <div className="min-h-full rounded-lg border border-gray-200 bg-gray-50 p-3 dark:border-gray-800 dark:bg-[#0b1220]">
+            <div className="min-h-full rounded-lg border border-gray-200 bg-gray-50 p-3 text-[13px] sm:text-[14px] leading-relaxed dark:border-gray-800 dark:bg-[#0b1220]">
               {messages.map((m, i) => (
                 <div
                   key={i}
-                  className={`mb-3 flex ${m.role === "user" ? "justify-start" : "justify-end"}`}
+                  className={`mb-3 flex ${
+                    m.role === "user" ? "justify-start" : "justify-end"
+                  }`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-xl px-3 py-2 ${
+                    className={`max-w-[80%] rounded-xl px-3 py-2 text-[13px] sm:text-[14px] leading-relaxed ${
                       m.role === "user"
                         ? "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-gray-200"
                         : "bg-sky-100 text-sky-900 dark:bg-sky-900/40 dark:text-sky-100"
@@ -295,16 +300,40 @@ export default function AiActionsPage() {
               <div className="h-6" />
             </div>
           </div>
-          <div className="p-4 gap-2 flex items-center justify-center">
+
+          {/* ورودی و اکشن‌ها پایین */}
+          <div className="p-4 gap-2 flex items-center justify-center text-[12px] sm:text-[13px]">
+            <div className="flex items-center gap-3">
+              <button
+                aria-label="تماس"
+                title="ارسال SMS"
+                onClick={handlePrepareSMS}
+                disabled={!segment || busy}
+                className="flex items-center justify-center size-11 sm:size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+              >
+                <Phone className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+              <button
+                aria-label="اعلان"
+                title="ساخت کمپین"
+                onClick={handleCreateCampaign}
+                disabled={!segment || busy}
+                className="flex items-center justify-center size-11 sm:size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+              >
+                <Megaphone className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+              <button
+                aria-label="دانلود"
+                title="دانلود Excel"
+                onClick={handleDownloadExcel}
+                disabled={!segment || busy}
+                className="flex items-center justify-center size-11 sm:size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
+              >
+                <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+              </button>
+            </div>
             <div className="rounded-lg grow">
               <div className="flex items-center gap-2">
-                <button
-                  onClick={send}
-                  disabled={busy}
-                  className="inline-flex h-10 shrink-0 items-center gap-1 rounded-lg bg-sky-600 px-3 py-2 text-[14px] font-semibold text-white hover:bg-sky-700 disabled:opacity-50"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
                 <textarea
                   ref={inputRef}
                   rows={1}
@@ -313,38 +342,16 @@ export default function AiActionsPage() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={onKeyDown}
                   placeholder="بنویس و با Enter ارسال کن (Shift+Enter = سطر جدید)…"
-                  className="max-h-40 min-h-[42px] w-full resize-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-[14px] text-gray-900 outline-none placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                  className="max-h-40 min-h-[42px] w-full resize-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-[13px] sm:text-[14px] text-gray-900 outline-none placeholder:text-gray-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
                 />
+                <button
+                  onClick={send}
+                  disabled={busy}
+                  className="inline-flex h-9 sm:h-10 shrink-0 items-center gap-1 rounded-lg bg-sky-600 px-3 py-2 text-[12px] sm:text-[13px] font-semibold text-white hover:bg-sky-700 disabled:opacity-50"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
               </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                aria-label="تماس"
-                title="ارسال SMS"
-                onClick={handlePrepareSMS}
-                disabled={!segment || busy}
-                className="flex items-center justify-center size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
-              >
-                <Phone className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="اعلان"
-                title="ساخت کمپین"
-                onClick={handleCreateCampaign}
-                disabled={!segment || busy}
-                className="flex items-center justify-center size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
-              >
-                <Megaphone className="h-5 w-5" />
-              </button>
-              <button
-                aria-label="دانلود"
-                title="دانلود Excel"
-                onClick={handleDownloadExcel}
-                disabled={!segment || busy}
-                className="flex items-center justify-center size-12 rounded-full border border-gray-300 bg-white text-gray-800 shadow-lg hover:bg-gray-50 hover:scale-105 transition-all duration-200 disabled:opacity-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
-              >
-                <Download className="h-5 w-5" />
-              </button>
             </div>
           </div>
         </section>

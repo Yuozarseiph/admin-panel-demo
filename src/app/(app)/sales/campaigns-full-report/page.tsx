@@ -4,19 +4,25 @@
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {
-  PlayCircle, 
+  PlayCircle,
   CheckCircle2,
-  Loader2, 
+  Loader2,
   TrendingUp,
 } from "lucide-react";
 
 import OverviewCardRe from "@/components/reports/OverviewCardRe";
+import {
+  campaignsTopSummary,
+  campaignsStats,
+  campaignsSeries,
+} from "@/data/campaigns-full-report";
 
 const toFa = (n: number) => n.toLocaleString("fa-IR");
+
 function IconCard({
   title,
   valueText,
-  tint = "bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-300",
+  tint = "bg-sky-50 text-sky-600 dark:bg-sky-900/30 dark:text-sky-300",
   Icon,
 }: {
   title: string;
@@ -25,27 +31,44 @@ function IconCard({
   Icon: React.ComponentType<{ size?: number; className?: string }>;
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
-      <div className={`rounded-full p-2 ${tint}`}><Icon size={18} /></div>
+    <div className="flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 text-[13px] sm:text-[14px] shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div className={`rounded-full p-2 ${tint}`}>
+        <Icon size={18} />
+      </div>
       <div className="text-right">
-        <div className="text-[14px] text-gray-500">{title}</div>
-        <div className="mt-1 text-[22px] font-bold">{valueText}</div>
+        <div className="text-[12px] sm:text-[13px] text-gray-600 dark:text-gray-400">
+          {title}
+        </div>
+        <div className="mt-1 text-[18px] sm:text-[20px] font-bold text-gray-900 dark:text-gray-100">
+          {valueText}
+        </div>
       </div>
     </div>
   );
 }
-function Circle({ value, color, track = "#E8EEFC", size = 56 }: { value: number; color: string; track?: string; size?: number }) {
+
+function Circle({
+  value,
+  color,
+  track = "#E5E7EB", // خاکستری روشن به‌جای آبی خیلی کم‌رنگ
+  size = 56,
+}: {
+  value: number;
+  color: string;
+  track?: string;
+  size?: number;
+}) {
   return (
     <div style={{ width: size, height: size }}>
       <CircularProgressbar
         value={value}
         text={`${Math.round(value)}%`}
-        strokeWidth={10}
+        strokeWidth={9}
         styles={buildStyles({
-          textSize: "28px",
+          textSize: "24px",
           pathColor: color,
           trailColor: track,
-          textColor: "#6b7280",
+          textColor: "#374151", // text-gray-700
         })}
       />
     </div>
@@ -58,72 +81,123 @@ function KPIWithCircle({
   percent,
   color,
   track,
-}: { title: string; valueText: string; percent: number; color: string; track?: string }) {
+}: {
+  title: string;
+  valueText: string;
+  percent: number;
+  color: string;
+  track?: string;
+}) {
   return (
-    <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 p-4">
+    <div className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 text-[13px] sm:text-[14px] text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
       <Circle value={percent} color={color} track={track} />
       <div className="grow">
-        <div className="text-[14px] text-gray-500">{title}</div>
-        <div className="mt-1 text-[22px] font-bold">{valueText}</div>
+        <div className="text-[12px] sm:text-[13px] text-gray-600 dark:text-gray-400">
+          {title}
+        </div>
+        <div className="mt-1 text-[18px] sm:text-[20px] font-bold text-gray-900 dark:text-gray-100">
+          {valueText}
+        </div>
       </div>
     </div>
   );
 }
 
 export default function CampaignsFullReport() {
-  const top = { active: 32, finished: 187, running: 18, highROI: 9 };
-  const stats = {
-    ordersCount: 38900,
-    ordersPercent: 89,
-    totalAmount: 98543000000,
-    amountPercent: 54,
-  };
-  const series = {
-    inventory: [
-      { name: "دوشنبه", value: 40 }, { name: "سه‌شنبه", value: 95 }, { name: "چهارشنبه", value: 70 },
-      { name: "پنج‌شنبه", value: 105 }, { name: "جمعه", value: 50 }, { name: "یکشنبه", value: 72 },
-    ],
-    customer: [
-      { name: "دوشنبه", value: 35 }, { name: "سه‌شنبه", value: 88 }, { name: "چهارشنبه", value: 63 },
-      { name: "پنج‌شنبه", value: 100 }, { name: "جمعه", value: 52 }, { name: "یکشنبه", value: 70 },
-    ],
-    profit: [
-      { name: "دوشنبه", value: 42 }, { name: "سه‌شنبه", value: 92 }, { name: "چهارشنبه", value: 69 },
-      { name: "پنج‌شنبه", value: 108 }, { name: "جمعه", value: 53 }, { name: "یکشنبه", value: 73 },
-    ],
-    sales: [
-      { name: "دوشنبه", value: 41 }, { name: "سه‌شنبه", value: 96 }, { name: "چهارشنبه", value: 71 },
-      { name: "پنج‌شنبه", value: 109 }, { name: "جمعه", value: 51 }, { name: "یکشنبه", value: 74 },
-    ],
-  };
+  const top = campaignsTopSummary;
+  const stats = campaignsStats;
+  const series = campaignsSeries;
 
   return (
-    <main className="p-4 sm:p-6 text-[20px]">
+    <main className="p-4 sm:p-6 text-[13px] sm:text-[14px]">
+      {/* تعداد کل */}
       <section className="mb-4">
-        <h2 className="mb-3 text-[16px] font-semibold text-gray-700 dark:text-gray-200">تعداد کل</h2>
+        <h2 className="mb-3 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
+          تعداد کل
+        </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <IconCard title="کمپین‌های فعال" valueText={toFa(top.active)} Icon={PlayCircle} tint="bg-emerald-50 text-emerald-600 dark:bg-emerald-900/20 dark:text-emerald-300" />
-          <IconCard title="کمپین‌ها تمام شده" valueText={toFa(top.finished)} Icon={CheckCircle2} tint="bg-gray-100 text-gray-600 dark:bg-gray-800/40 dark:text-gray-300" />
-          <IconCard title="در حال اجرا" valueText={toFa(top.running)} Icon={Loader2} tint="bg-sky-50 text-sky-600 dark:bg-sky-900/20 dark:text-sky-300" />
-          <IconCard title="کمپین‌های پر بازده" valueText={toFa(top.highROI)} Icon={TrendingUp} tint="bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-300" />
+          <IconCard
+            title="کمپین‌های فعال"
+            valueText={toFa(top.active)}
+            Icon={PlayCircle}
+            tint="bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300"
+          />
+          <IconCard
+            title="کمپین‌ها تمام شده"
+            valueText={toFa(top.finished)}
+            Icon={CheckCircle2}
+            tint="bg-slate-100 text-slate-700 dark:bg-slate-800/60 dark:text-slate-200"
+          />
+          <IconCard
+            title="در حال اجرا"
+            valueText={toFa(top.running)}
+            Icon={Loader2}
+            tint="bg-sky-50 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"
+          />
+          <IconCard
+            title="کمپین‌های پر بازده"
+            valueText={toFa(top.highROI)}
+            Icon={TrendingUp}
+            tint="bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300"
+          />
         </div>
       </section>
-      <section className="rounded-xl ">
-        <div className=" py-5">
-          <h2 className="mb-4 text-[16px] font-semibold text-gray-700 dark:text-gray-200">تعداد کل فروش در کمپین‌ها</h2>
+
+      {/* KPI فروش کمپین‌ها */}
+      <section className="rounded-xl">
+        <div className="py-5">
+          <h2 className="mb-4 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
+            تعداد کل فروش در کمپین‌ها
+          </h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <KPIWithCircle title="تعداد کل سفارشات" valueText={toFa(stats.ordersCount)} percent={stats.ordersPercent} color="#ef4444" track="#FFE9E9" />
-            <KPIWithCircle title="مبلغ کل" valueText={`${toFa(stats.totalAmount)} تومان`} percent={stats.amountPercent} color="#3b82f6" track="#E8EEFC" />
+            <KPIWithCircle
+              title="تعداد کل سفارشات"
+              valueText={toFa(stats.ordersCount)}
+              percent={stats.ordersPercent}
+              color="#ef4444" // red-500
+              track="#FEE2E2" // red-200
+            />
+            <KPIWithCircle
+              title="مبلغ کل"
+              valueText={`${toFa(stats.totalAmount)} تومان`}
+              percent={stats.amountPercent}
+              color="#2563EB" // blue-600
+              track="#DBEAFE" // blue-200
+            />
           </div>
         </div>
       </section>
+
+      {/* گزارش کلی کمپین‌ها */}
       <section className="mt-4">
-        <h2 className="mb-3 text-[16px] font-semibold text-gray-700 dark:text-gray-200">گزارش کلی کمپین‌ها</h2>
+        <h2 className="mb-3 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
+          گزارش کلی کمپین‌ها
+        </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <OverviewCardRe title="موجودی" color="#8b5cf6" fill="rgba(139,92,246,0.12)" data={series.inventory} />
-          <OverviewCardRe title="مشتری" color="#f43f5e" fill="rgba(244,63,94,0.12)" data={series.customer} />
-          <OverviewCardRe title="سود" color="#10b981" fill="rgba(16,185,129,0.12)" data={series.profit} />
-          <OverviewCardRe title="فروش" color="#3b82f6" fill="rgba(59,130,246,0.12)" data={series.sales} />
+          <OverviewCardRe
+            title="موجودی"
+            color="#7C3AED" // violet-600
+            fill="rgba(124,58,237,0.14)"
+            data={series.inventory}
+          />
+          <OverviewCardRe
+            title="مشتری"
+            color="#E11D48" // rose-600
+            fill="rgba(225,29,72,0.14)"
+            data={series.customer}
+          />
+          <OverviewCardRe
+            title="سود"
+            color="#059669" // emerald-600
+            fill="rgba(5,150,105,0.14)"
+            data={series.profit}
+          />
+          <OverviewCardRe
+            title="فروش"
+            color="#2563EB" // blue-600
+            fill="rgba(37,99,235,0.14)"
+            data={series.sales}
+          />
         </div>
       </section>
     </main>
