@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Collapse } from "rizzui";
-import {cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import {
   X,
   BrainCircuit,
@@ -64,10 +64,26 @@ const items: NavItem[] = [
     href: "/campaigns",
     icon: Megaphone,
     children: [
-      { label: "لیست کمپین ها", href: "/campaigns/list-campaigns", icon: ListChecks },
-      { label: "کمپین جدید", href: "/campaigns/new-campaigns", icon: PlusCircle },
-      { label: "ساخت کمپین با هوش مصنوعی", href: "/campaigns/new-campaigns-ai", icon: Bot },
-      { label: "گزارش کلی کمپین ها", href: "/campaigns/campaigns-full-report", icon: BarChart3 },
+      {
+        label: "لیست کمپین ها",
+        href: "/campaigns/list-campaigns",
+        icon: ListChecks,
+      },
+      {
+        label: "کمپین جدید",
+        href: "/campaigns/new-campaigns",
+        icon: PlusCircle,
+      },
+      {
+        label: "ساخت کمپین با هوش مصنوعی",
+        href: "/campaigns/new-campaigns-ai",
+        icon: Bot,
+      },
+      {
+        label: "گزارش کلی کمپین ها",
+        href: "/campaigns/campaigns-full-report",
+        icon: BarChart3,
+      },
     ],
   },
 
@@ -76,10 +92,26 @@ const items: NavItem[] = [
     href: "/sales-marketing",
     icon: PresentationIcon,
     children: [
-      { label: "اطلاع رسانی سریع", href: "/sales-marketing/quick-broadcast", icon: BellRing },
-      { label: "پروموشن و تخفیف", href: "/sales-marketing/promotions", icon: PercentIcon },
-      { label: "آفرهای لحظه ای", href: "/sales-marketing/flash-offers", icon: Flashlight },
-      { label: "ساخت لیست ارسال", href: "/sales-marketing/send-lists", icon: ListChecks },
+      {
+        label: "اطلاع رسانی سریع",
+        href: "/sales-marketing/quick-broadcast",
+        icon: BellRing,
+      },
+      {
+        label: "پروموشن و تخفیف",
+        href: "/sales-marketing/promotions",
+        icon: PercentIcon,
+      },
+      {
+        label: "آفرهای لحظه ای",
+        href: "/sales-marketing/flash-offers",
+        icon: Flashlight,
+      },
+      {
+        label: "ساخت لیست ارسال",
+        href: "/sales-marketing/send-lists",
+        icon: ListChecks,
+      },
     ],
   },
 
@@ -105,9 +137,6 @@ const items: NavItem[] = [
       { label: "ایجاد تیکت", href: "/support/new", icon: TicketPlus },
     ],
   },
-];
-
-const settings: NavLeaf[] = [
   { label: "تنظیمات", href: "/settings", icon: Settings },
 ];
 
@@ -142,7 +171,9 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         onClick={onClose}
         className={cn(
           "group relative flex items-center justify-between rounded-md px-3 py-2 font-medium capitalize transition-colors duration-200",
-          isChild ? "mx-3.5 mb-0.5 last-of-type:mb-1 lg:last-of-type:mb-2 2xl:mx-5" : "mx-3 my-0.5 lg:my-1 2xl:mx-5 2xl:my-2",
+          isChild
+            ? "mx-3.5 mb-0.5 last-of-type:mb-1 lg:last-of-type:mb-2 2xl:mx-5"
+            : "mx-3 my-0.5 lg:my-1 2xl:mx-5 2xl:my-2",
           active
             ? `${!isChild ? "before:top-2/5 before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-emerald-500 2xl:before:-start-5" : ""} text-emerald-600 dark:text-emerald-400`
             : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-200"
@@ -153,14 +184,18 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
             <span
               className={cn(
                 "inline-flex items-center justify-center rounded-md",
-                isChild 
+                isChild
                   ? cn(
                       "me-[18px] ms-1 h-1 w-1 rounded-full bg-current transition-all duration-200",
-                      active ? "bg-emerald-500 ring-[1px] ring-emerald-500" : "opacity-40"
+                      active
+                        ? "bg-emerald-500 ring-[1px] ring-emerald-500"
+                        : "opacity-40"
                     )
                   : cn(
                       "me-2 size-5 [&>svg]:size-5",
-                      active ? "text-emerald-500" : "text-gray-800 dark:text-gray-200 dark:group-hover:text-gray-700"
+                      active
+                        ? "text-emerald-500"
+                        : "text-gray-800 dark:text-gray-200 dark:group-hover:text-gray-700"
                     )
               )}
             >
@@ -179,7 +214,12 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
     );
   };
 
-  const NavGroupItem = ({ label, href, icon: Icon, children = [] }: NavGroup) => {
+  const NavGroupItem = ({
+    label,
+    href,
+    icon: Icon,
+    children = [],
+  }: NavGroup) => {
     const isDropdownOpen =
       pathname === href ||
       pathname.startsWith(href + "/") ||
@@ -290,15 +330,6 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           </div>
 
           <div className="my-4 h-px bg-gray-200 dark:bg-gray-800" />
-
-          {settings.map((i) => (
-            <NavLeafItem
-              key={i.href}
-              href={i.href}
-              label={i.label}
-              icon={i.icon}
-            />
-          ))}
 
           <div className="mt-auto pt-3">
             <Link

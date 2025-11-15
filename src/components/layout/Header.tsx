@@ -23,7 +23,6 @@ export default function Header({
 
   return (
     <div className="flex w-full max-w-dvw items-center justify-between pl-4 sm:pl-10">
-      {/* سمت چپ: عنوان و دکمه منو در موبایل */}
       <div className="flex items-center gap-2">
         <button
           type="button"
@@ -37,10 +36,7 @@ export default function Header({
           {title}
         </h1>
       </div>
-
-      {/* سمت راست: پروفایل + آیکن‌ها */}
       <div className="flex items-center gap-3">
-        {/* منوی پروفایل با Headless UI */}
         <Popover className="relative">
           <Popover.Button
             aria-label="پروفایل"
@@ -119,22 +115,8 @@ export default function Header({
             </Popover.Panel>
           </Transition>
         </Popover>
-
-        {/* آیکن‌های کنار پروفایل */}
         <div className="flex items-center gap-2">
-          {/* تنظیمات */}
-          <Link
-            href="/profile/settings"
-            aria-label="تنظیمات"
-            className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 shadow-[0_1px_2px_rgba(15,23,42,0.08)] hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
-          >
-            <Settings size={18} />
-          </Link>
-
-          {/* منوی پیام‌ها */}
           <MessagesMenu unreadCount={inboxCount} />
-
-          {/* منوی اعلان‌ها با RizzUI */}
           <NotificationDropdown>
             <button
               type="button"
