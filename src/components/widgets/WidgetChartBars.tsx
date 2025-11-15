@@ -160,7 +160,7 @@ export default function WidgetChartBars({
           {dropdown}
         </div>
       }
-      className={cn("h-full lg:h-100 @container", className)}
+      className={cn(`h-full lg:h-121 @container`, className)}
     >
       {(totalText || totalValue) && (
         <div className="mb-2 mt-1 flex items-center gap-2" dir="rtl">

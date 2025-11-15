@@ -17,6 +17,7 @@ export type CustomerRow = {
   createdAt: string;
   status: MemberStatus;
 };
+
 export const customersAll: CustomerRow[] = [
   {
     id: "1",
@@ -253,12 +254,14 @@ export type PurchaseRow = {
   earnedPoints: number;
   invoiceNo: string;
 };
+
 export type VoucherRow = {
   id: string;
   title: string;
   status: "فعال" | "استفاده‌شده" | "منقضی";
   gainedAt: string;
 };
+
 export type MessageRow = {
   id: string;
   via: "پیامک" | "ایمیل" | "چت";
@@ -266,6 +269,7 @@ export type MessageRow = {
   subject: string;
   answered: boolean;
 };
+
 export type FriendRow = { id: string; name: string; code: string };
 export type NoteRow = {
   id: string;
@@ -273,6 +277,7 @@ export type NoteRow = {
   createdAt: string;
   author: string;
 };
+
 export type ActivityRow = {
   id: string;
   when: string;
