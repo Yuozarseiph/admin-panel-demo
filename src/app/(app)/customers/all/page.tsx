@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { FileText, Download } from "lucide-react";
 import {
   customersAll,
   type CustomerRow,
@@ -86,11 +87,9 @@ export default function CustomersListPage() {
     return arr;
   }, [filtered, sortKey, sortDir]);
 
-  // اگر جستجو یا فیلتر داریم، همه رو نشون بده، وگرنه فقط 30 تا اول
   const hasSearch = q.trim() !== "" || level !== "همه" || status !== "همه";
   const limitedData = hasSearch ? sorted : sorted.slice(0, 30);
-  
-  // Pagination روی داده‌های محدود شده
+
   const total = limitedData.length;
   const totalAll = sorted.length;
   const pages = Math.max(1, Math.ceil(total / pageSize));
@@ -100,14 +99,116 @@ export default function CustomersListPage() {
     clampedPage * pageSize + pageSize
   );
 
+  // Export to Excel (CSV)
+  const exportCSV = () => {
+    const header = [
+      "نام مشتری",
+      "کد عضویت",
+      "سطح",
+      "امتیاز کل",
+      "امتیاز قابل استفاده",
+      "آخرین خرید",
+      "مبلغ خرید",
+      "تاریخ ثبت‌نام",
+      "وضعیت",
+    ];
+    const rows = sorted.map((r) => [
+      r.fullName,
+      r.code,
+      r.level,
+      toFa(r.totalPoints),
+      toFa(r.usablePoints),
+      fmtDate(r.lastPurchaseDate),
+      fmtMoney(r.lastPurchaseAmount),
+      fmtDate(r.createdAt),
+      r.status,
+    ]);
+    const csvBody = [header, ...rows]
+      .map((row) =>
+        row.map((x) => `"${String(x).replace(/"/g, '""')}"`).join(",")
+      )
+      .join("\n");
+    const bom = "\uFEFF";
+    const blob = new Blob([bom + csvBody], {
+      type: "text/csv;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "customers-list.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Export to PDF
+  const exportPDF = () => {
+    const w = window.open("", "_blank");
+    if (!w) return;
+    w.document.write(`
+      <html lang="fa" dir="rtl">
+      <head>
+        <meta charset="utf-8" />
+        <title>لیست مشتریان</title>
+        <style>
+          body { font-family: Tahoma, Arial, sans-serif; direction: rtl; padding: 20px; }
+          h2 { text-align: center; margin-bottom: 30px; }
+          table { border-collapse: collapse; width: 100%; }
+          th, td { border: 1px solid #ddd; padding: 8px; font-size: 12px; text-align: right; }
+          th { background: #f3f4f6; font-weight: bold; }
+          @media print { body { padding: 0; } }
+        </style>
+      </head>
+      <body>
+        <h2>لیست مشتریان</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>نام مشتری</th>
+              <th>کد عضویت</th>
+              <th>سطح</th>
+              <th>امتیاز کل</th>
+              <th>امتیاز قابل استفاده</th>
+              <th>آخرین خرید</th>
+              <th>مبلغ خرید</th>
+              <th>تاریخ ثبت‌نام</th>
+              <th>وضعیت</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted
+              .map(
+                (r) => `
+              <tr>
+                <td>${r.fullName}</td>
+                <td>${r.code}</td>
+                <td>${r.level}</td>
+                <td>${toFa(r.totalPoints)}</td>
+                <td>${toFa(r.usablePoints)}</td>
+                <td>${fmtDate(r.lastPurchaseDate)}</td>
+                <td>${fmtMoney(r.lastPurchaseAmount)}</td>
+                <td>${fmtDate(r.createdAt)}</td>
+                <td>${r.status}</td>
+              </tr>
+            `
+              )
+              .join("")}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `);
+    w.document.close();
+    w.focus();
+    w.print();
+  };
+
   return (
     <main className="min-h-screen bg-gray-50 p-4 dark:bg-gray-950 sm:p-6">
       <div className="mx-auto max-w-[1600px]">
         <section className="rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
           {/* Header */}
           <div className="flex flex-col gap-4 border-b border-gray-200 px-5 py-5 dark:border-gray-800 sm:flex-row sm:items-center sm:justify-between">
-
-            <div className="flex flex-wrap items-center gap-5">
+            <div className="flex flex-wrap items-center gap-2">
               <select
                 value={level}
                 onChange={(e) => {
@@ -163,6 +264,23 @@ export default function CustomersListPage() {
                   />
                 </svg>
               </button>
+
+              {/* دکمه‌های خروجی */}
+              <button
+                onClick={exportCSV}
+                className="flex h-9 items-center gap-2 rounded-lg bg-emerald-600 px-3 text-[13px] font-medium text-white hover:bg-emerald-700 sm:h-10"
+              >
+                <Download className="h-4 w-4" />
+                <span>خروجی اکسل</span>
+              </button>
+
+              <button
+                onClick={exportPDF}
+                className="flex h-9 items-center gap-2 rounded-lg bg-sky-600 px-3 text-[13px] font-medium text-white hover:bg-sky-700 sm:h-10"
+              >
+                <FileText className="h-4 w-4" />
+                <span>خروجی PDF</span>
+              </button>
             </div>
           </div>
 
@@ -177,9 +295,9 @@ export default function CustomersListPage() {
           {/* Table */}
           <div className="overflow-x-auto">
             <table className="w-full">
+              {/* همان thead و tbody قبلی... */}
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50 text-[13px] dark:border-gray-800 dark:bg-gray-800/60">
-                  {/* ستون 1: مشتری */}
                   <th
                     onClick={() => handleSort("fullName")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -193,8 +311,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 2: کد عضویت */}
                   <th
                     onClick={() => handleSort("code")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -208,8 +324,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 3: سطح عضویت */}
                   <th
                     onClick={() => handleSort("level")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -223,8 +337,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 4: امتیاز کل */}
                   <th
                     onClick={() => handleSort("totalPoints")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -238,8 +350,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 5: امتیاز قابل استفاده */}
                   <th
                     onClick={() => handleSort("usablePoints")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -253,8 +363,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 6: آخرین خرید */}
                   <th
                     onClick={() => handleSort("lastPurchaseDate")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -268,8 +376,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 7: تاریخ ثبت‌نام */}
                   <th
                     onClick={() => handleSort("createdAt")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -283,8 +389,6 @@ export default function CustomersListPage() {
                       )}
                     </span>
                   </th>
-
-                  {/* ستون 8: وضعیت */}
                   <th
                     onClick={() => handleSort("status")}
                     className="cursor-pointer select-none px-6 py-4 text-right font-medium text-gray-700 hover:text-emerald-600 dark:text-gray-300 dark:hover:text-emerald-400"
@@ -307,7 +411,6 @@ export default function CustomersListPage() {
                     key={row.id}
                     className="border-b border-gray-200 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/40"
                   >
-                    {/* ستون 1: مشتری */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
@@ -328,32 +431,11 @@ export default function CustomersListPage() {
                         </div>
                       </div>
                     </td>
-
-                    {/* ستون 2: کد عضویت */}
                     <td className="px-6 py-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-[13px] text-gray-700 dark:text-gray-300">
-                          {row.code}
-                        </span>
-                        <button className="rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-800">
-                          <svg
-                            className="h-4 w-4 text-gray-400"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                      <span className="font-mono text-[13px] text-gray-700 dark:text-gray-300">
+                        {row.code}
+                      </span>
                     </td>
-
-                    {/* ستون 3: سطح عضویت */}
                     <td className="px-6 py-4">
                       <span
                         className={[
@@ -370,18 +452,12 @@ export default function CustomersListPage() {
                         {row.level}
                       </span>
                     </td>
-
-                    {/* ستون 4: امتیاز کل */}
                     <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">
                       {toFa(row.totalPoints)}
                     </td>
-
-                    {/* ستون 5: امتیاز قابل استفاده */}
                     <td className="px-6 py-4 font-medium text-gray-900 dark:text-gray-100">
                       {toFa(row.usablePoints)}
                     </td>
-
-                    {/* ستون 6: آخرین خرید */}
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
                         <span className="text-[13px] text-gray-900 dark:text-gray-100">
@@ -392,8 +468,6 @@ export default function CustomersListPage() {
                         </span>
                       </div>
                     </td>
-
-                    {/* ستون 7: تاریخ ثبت‌نام */}
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
                         <span className="text-[13px] text-gray-900 dark:text-gray-100">
@@ -404,8 +478,6 @@ export default function CustomersListPage() {
                         </span>
                       </div>
                     </td>
-
-                    {/* ستون 8: وضعیت */}
                     <td className="px-6 py-4">
                       <span
                         className={[
