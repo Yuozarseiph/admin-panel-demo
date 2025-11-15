@@ -13,10 +13,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import {
-  openTicketsData,
-  type Priority,
-} from "@/data/support-open-tickets";
+import { openTicketsData, type Priority } from "@/data/support-open-tickets";
 
 const toFa = (n: number) => n.toLocaleString("fa-IR");
 
@@ -60,8 +57,7 @@ export default function OpenTicketsPage() {
     setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
 
   const allChecked =
-    openTicketsData.length > 0 &&
-    openTicketsData.every((t) => checked[t.id]);
+    openTicketsData.length > 0 && openTicketsData.every((t) => checked[t.id]);
 
   const toggleAll = () => {
     if (allChecked) {
@@ -110,19 +106,11 @@ export default function OpenTicketsPage() {
           <table className="min-w-full text-right">
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50 text-[12px] sm:text-[13px] text-gray-600 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-200">
-                <th className="px-4 py-3 text-center">عملیات</th>
+                <th className="px-4 py-3">مشتری</th>
                 <th className="px-4 py-3">تاریخ آخرین فعالیت</th>
                 <th className="px-4 py-3">برچسب / اولویت</th>
-                <th className="px-4 py-3">مشتری</th>
                 <th className="px-4 py-3">موضوع تیکت</th>
-                <th className="px-4 py-3 text-center">
-                  <input
-                    type="checkbox"
-                    checked={allChecked}
-                    onChange={toggleAll}
-                    className="h-4 w-4 accent-sky-600"
-                  />
-                </th>
+                <th className="px-4 py-3 text-center">عملیات</th>
               </tr>
             </thead>
             <tbody className="text-[13px] sm:text-[14px]">
@@ -134,20 +122,20 @@ export default function OpenTicketsPage() {
                     key={t.id}
                     className="border-b border-gray-200 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/60"
                   >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center justify-center gap-2">
-                        <button
-                          type="button"
-                          className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-red-500 dark:hover:bg-red-950/40 dark:hover:text-red-300"
-                        >
-                          <Trash2 size={14} />
-                        </button>
-                        <button
-                          type="button"
-                          className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
-                        >
-                          <Pencil size={14} />
-                        </button>
+                    <td className="px-4 py-3 align-top">
+                      <div className="flex items-center justify-start gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[11px] font-semibold text-sky-700 dark:bg-sky-900/50 dark:text-sky-200">
+                          {initials(t.customerName)}
+                        </div>
+                        <div className="flex flex-col gap-0.5">
+                          <span className="text-[13px] font-medium text-gray-800 dark:text-gray-100">
+                            {t.customerName}
+                          </span>
+                          <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
+                            <UserCircle2 size={12} />
+                            <span>{t.customerEmail}</span>
+                          </span>
+                        </div>
                       </div>
                     </td>
                     <td className="px-4 py-3 align-top">
@@ -177,22 +165,7 @@ export default function OpenTicketsPage() {
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 align-top">
-                      <div className="flex items-center justify-start gap-2">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[11px] font-semibold text-sky-700 dark:bg-sky-900/50 dark:text-sky-200">
-                          {initials(t.customerName)}
-                        </div>
-                        <div className="flex flex-col gap-0.5">
-                          <span className="text-[13px] font-medium text-gray-800 dark:text-gray-100">
-                            {t.customerName}
-                          </span>
-                          <span className="flex items-center gap-1 text-[11px] text-gray-500 dark:text-gray-400">
-                            <UserCircle2 size={12} />
-                            <span>{t.customerEmail}</span>
-                          </span>
-                        </div>
-                      </div>
-                    </td>
+
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between gap-2">
@@ -214,13 +187,21 @@ export default function OpenTicketsPage() {
                         </p>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-center align-top">
-                      <input
-                        type="checkbox"
-                        checked={!!checked[t.id]}
-                        onChange={() => toggleRow(t.id)}
-                        className="h-4 w-4 accent-sky-600"
-                      />
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          type="button"
+                          className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-red-50 hover:text-red-600 dark:border-gray-700 dark:text-gray-400 dark:hover:border-red-500 dark:hover:bg-red-950/40 dark:hover:text-red-300"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                        <button
+                          type="button"
+                          className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
+                        >
+                          <Pencil size={14} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
