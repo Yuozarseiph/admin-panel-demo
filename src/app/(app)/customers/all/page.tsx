@@ -310,13 +310,6 @@ export default function CustomersListPage() {
             </div>
           )}
 
-          {/* Loading Overlay */}
-          {isSearching && (
-            <div className="flex items-center justify-center gap-2 border-b border-gray-200 bg-blue-50 px-5 py-3 text-[13px] text-blue-700 dark:border-gray-800 dark:bg-blue-900/20 dark:text-blue-400">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>در حال جستجو...</span>
-            </div>
-          )}
 
           {/* Table */}
           <div className="relative overflow-x-auto">
@@ -325,9 +318,6 @@ export default function CustomersListPage() {
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm dark:bg-gray-900/50">
                 <div className="flex flex-col items-center gap-3">
                   <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-                  <span className="text-[13px] font-medium text-gray-700 dark:text-gray-300">
-                    در حال بارگذاری...
-                  </span>
                 </div>
               </div>
             )}
