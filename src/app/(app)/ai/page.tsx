@@ -225,7 +225,6 @@ export default function AiActionsPage() {
       </div>
 
       <div className="grid flex-1 min-h-0 gap-6 lg:grid-cols-[280px_1fr]">
-        {/* تاریخچه */}
         <aside className="rounded-xl border border-gray-200 bg-white p-4 text-[12px] sm:text-[13px] dark:border-gray-800 dark:bg-gray-900 overflow-hidden">
           <div className="mb-3 flex items-center gap-2 text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
             <Clock className="h-4 w-4" />
@@ -248,8 +247,6 @@ export default function AiActionsPage() {
             ))}
           </div>
         </aside>
-
-        {/* چت و اکشن‌ها */}
         <section className="relative grid min-h-0 grid-rows-[auto_1fr_auto] rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2 text-[11px] sm:text-[12px] text-gray-500 dark:text-gray-400">
@@ -272,8 +269,6 @@ export default function AiActionsPage() {
               </div>
             )}
           </div>
-
-          {/* لیست پیام‌ها */}
           <div
             ref={chatScrollRef}
             className="custom-scrollbar relative min-h-0 overflow-y-auto px-4 pb-2"
@@ -301,7 +296,6 @@ export default function AiActionsPage() {
             </div>
           </div>
 
-          {/* ورودی و اکشن‌ها پایین */}
           <div className="p-4 gap-2 flex items-center justify-center text-[12px] sm:text-[13px]">
             <div className="flex items-center gap-3">
               <button

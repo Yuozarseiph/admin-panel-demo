@@ -78,7 +78,6 @@ export default function OpenTicketsPage() {
   return (
     <main dir="rtl" className="p-4 sm:p-6 text-[13px] sm:text-[14px]">
       <section className="rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
-        {/* هدر بالا */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 px-5 py-3 dark:border-gray-800">
           <div className="flex items-center gap-3">
             <Link
@@ -99,8 +98,6 @@ export default function OpenTicketsPage() {
             <span>ایجاد تیکت</span>
           </Link>
         </div>
-
-        {/* خلاصه تعداد */}
         <div className="border-b border-gray-100 px-5 py-3 text-[12px] sm:text-[13px] dark:border-gray-800">
           <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
             <span className="rounded-full bg-white/80 px-1.5 py-0.5 text-[11px] text-gray-800 dark:bg-gray-900 dark:text-gray-100">
@@ -109,8 +106,6 @@ export default function OpenTicketsPage() {
             <span>تیکت باز</span>
           </span>
         </div>
-
-        {/* جدول شبیه تصویر (کاملاً راست‌چین و فارسی) */}
         <div className="overflow-x-auto">
           <table className="min-w-full text-right">
             <thead>
@@ -139,7 +134,6 @@ export default function OpenTicketsPage() {
                     key={t.id}
                     className="border-b border-gray-200 hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-gray-800/60"
                   >
-                    {/* عملیات */}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-2">
                         <button
@@ -156,8 +150,6 @@ export default function OpenTicketsPage() {
                         </button>
                       </div>
                     </td>
-
-                    {/* تاریخ */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-col items-start gap-0.5">
                         <span className="text-[13px] font-medium text-gray-800 dark:text-gray-100">
@@ -168,8 +160,6 @@ export default function OpenTicketsPage() {
                         </span>
                       </div>
                     </td>
-
-                    {/* برچسب / اولویت */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-col items-start gap-1">
                         <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-[11px] text-gray-700 dark:bg-gray-800 dark:text-gray-200">
@@ -187,8 +177,6 @@ export default function OpenTicketsPage() {
                         </span>
                       </div>
                     </td>
-
-                    {/* مشتری */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex items-center justify-start gap-2">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-[11px] font-semibold text-sky-700 dark:bg-sky-900/50 dark:text-sky-200">
@@ -205,8 +193,6 @@ export default function OpenTicketsPage() {
                         </div>
                       </div>
                     </td>
-
-                    {/* موضوع + کانال + خلاصه */}
                     <td className="px-4 py-3 align-top">
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between gap-2">
@@ -228,8 +214,6 @@ export default function OpenTicketsPage() {
                         </p>
                       </div>
                     </td>
-
-                    {/* چک‌باکس */}
                     <td className="px-4 py-3 text-center align-top">
                       <input
                         type="checkbox"

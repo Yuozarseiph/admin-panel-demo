@@ -50,7 +50,7 @@ function IconCard({
 function Circle({
   value,
   color,
-  track = "#E5E7EB", // خاکستری روشن به‌جای آبی خیلی کم‌رنگ
+  track = "#E5E7EB",
   size = 56,
 }: {
   value: number;
@@ -110,7 +110,6 @@ export default function CampaignsFullReport() {
 
   return (
     <main className="p-4 sm:p-6 text-[13px] sm:text-[14px]">
-      {/* تعداد کل */}
       <section className="mb-4">
         <h2 className="mb-3 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
           تعداد کل
@@ -142,8 +141,6 @@ export default function CampaignsFullReport() {
           />
         </div>
       </section>
-
-      {/* KPI فروش کمپین‌ها */}
       <section className="rounded-xl">
         <div className="py-5">
           <h2 className="mb-4 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
@@ -154,21 +151,20 @@ export default function CampaignsFullReport() {
               title="تعداد کل سفارشات"
               valueText={toFa(stats.ordersCount)}
               percent={stats.ordersPercent}
-              color="#ef4444" // red-500
-              track="#FEE2E2" // red-200
+              color="#ef4444" 
+              track="#FEE2E2" 
             />
             <KPIWithCircle
               title="مبلغ کل"
               valueText={`${toFa(stats.totalAmount)} تومان`}
               percent={stats.amountPercent}
-              color="#2563EB" // blue-600
-              track="#DBEAFE" // blue-200
+              color="#2563EB" 
+              track="#DBEAFE" 
             />
           </div>
         </div>
       </section>
 
-      {/* گزارش کلی کمپین‌ها */}
       <section className="mt-4">
         <h2 className="mb-3 text-[15px] sm:text-[16px] font-semibold text-gray-800 dark:text-gray-100">
           گزارش کلی کمپین‌ها
@@ -176,25 +172,25 @@ export default function CampaignsFullReport() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           <OverviewCardRe
             title="موجودی"
-            color="#7C3AED" // violet-600
+            color="#7C3AED"
             fill="rgba(124,58,237,0.14)"
             data={series.inventory}
           />
           <OverviewCardRe
             title="مشتری"
-            color="#E11D48" // rose-600
+            color="#E11D48"
             fill="rgba(225,29,72,0.14)"
             data={series.customer}
           />
           <OverviewCardRe
             title="سود"
-            color="#059669" // emerald-600
+            color="#059669"
             fill="rgba(5,150,105,0.14)"
             data={series.profit}
           />
           <OverviewCardRe
             title="فروش"
-            color="#2563EB" // blue-600
+            color="#2563EB"
             fill="rgba(37,99,235,0.14)"
             data={series.sales}
           />

@@ -32,7 +32,6 @@ import {
   TicketPlus,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
 type NavIcon = React.ComponentType<{ size?: number; className?: string }>;
 type NavLeaf = { label: string; href: string; icon?: NavIcon; badge?: string };
@@ -102,11 +101,6 @@ const items: NavItem[] = [
         label: "ساخت لیست ارسال",
         href: "/sales-marketing/send-lists",
         icon: ListChecks,
-      },
-      {
-        label: "هوش مصنوعی بازاریابی",
-        href: "/sales-marketing/ai",
-        icon: Bot,
       },
     ],
   },
@@ -266,37 +260,25 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           />
         </button>
 
-        {/* رپر انیمیشنی با Framer Motion */}
-        <AnimatePresence initial={false}>
-          {expanded && (
-            <motion.div
-              key={href}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className="overflow-hidden"
-            >
-              <ul
-                id={`grp-${href}`}
-                className={[
-                  "ms-8 mt-1 space-y-1 overflow-hidden",
-                  "transition-[max-height] duration-300 ease-out",
-                  expanded ? "max-h-96" : "max-h-0",
-                ].join(" ")}
-              >
-                {children.map((c) => (
-                  <NavLeafItem
-                    key={c.href}
-                    href={c.href}
-                    label={c.label}
-                    Icon={c.icon ?? null}
-                  />
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <ul
+          id={`grp-${href}`}
+          className={[
+            "ms-8 mt-1 space-y-1 overflow-hidden",
+            "transition-[max-height,opacity,transform] duration-300 ease-out",
+            expanded
+              ? "max-h-96 opacity-100 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-1",
+          ].join(" ")}
+        >
+          {children.map((c) => (
+            <NavLeafItem
+              key={c.href}
+              href={c.href}
+              label={c.label}
+              Icon={c.icon ?? null}
+            />
+          ))}
+        </ul>
       </li>
     );
   };
