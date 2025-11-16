@@ -31,8 +31,6 @@ const calculatePercentage = (part: number, total: number) =>
 const COLORS = ['#8DE3F5', '#59A7FF', '#A5F6C6'];
 
 const toFa = (n: number) => n.toLocaleString('fa-IR');
-
-// WidgetCard Component
 function WidgetCard({
   title,
   action,
@@ -68,7 +66,6 @@ function WidgetCard({
   );
 }
 
-// DropdownAction Component
 function DropdownAction({
   options,
   onChange,

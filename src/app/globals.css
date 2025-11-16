@@ -89,7 +89,7 @@ html,
 body {
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: auto;
   font-family: "IRANYekanXFaNum", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 }

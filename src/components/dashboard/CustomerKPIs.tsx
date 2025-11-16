@@ -46,7 +46,6 @@ export default function CustomerKPIs() {
                 : "border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900"
             }`}
           >
-            {/* Header با آیکن */}
             <div className="mb-4 flex items-center gap-5">
               <span
                 className={`flex rounded-[14px] p-2.5 ${
@@ -79,8 +78,6 @@ export default function CustomerKPIs() {
                 </p>
               </div>
             </div>
-
-            {/* Badge تغییرات */}
             <div className="flex items-center gap-1.5">
               <div className="flex items-center gap-1">
                 <span

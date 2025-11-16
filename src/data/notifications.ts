@@ -10,9 +10,7 @@ import {
 export type NotificationItem = {
   id: string;
   name: string;
-  // آیکن React؛ در فایل کامپوننت با <item.icon /> رندر می‌شود
   icon: React.ComponentType<{ className?: string }>;
-  // زمان ارسال؛ می‌تونی Date یا string بدهی
   sendTime: string | number | Date;
   unRead?: boolean;
 };

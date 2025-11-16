@@ -75,7 +75,7 @@ const items: NavItem[] = [
         icon: PlusCircle,
       },
       {
-        label: "ساخت کمپین با هوش مصنوعی",
+        label: "ایجاد کمپین با هوش مصنوعی",
         href: "/campaigns/new-campaigns-ai",
         icon: Bot,
       },
