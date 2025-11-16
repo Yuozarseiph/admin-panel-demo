@@ -34,7 +34,7 @@ export default function Header({
         </button>
         <h1 className="text-[13px] sm:text-[14px] font-semibold">{title}</h1>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 ml-10">
         <Popover className="relative">
           <Popover.Button
             aria-label="پروفایل"

@@ -19,7 +19,7 @@ export default function NewCampaignPage() {
     <main className="p-4 sm:p-6 text-[13px] sm:text-[14px]">
       <section className="rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100">
         <header className="border-b border-gray-200 bg-gray-50 px-5 py-4 text-[14px] sm:text-[15px] font-semibold text-gray-700 dark:border-gray-800 dark:bg-gray-800/60 dark:text-gray-200">
-          ایجاد کمپین جدید (فرم هوشمند)
+          ایجاد کمپین جدید
         </header>
 
         <div className="px-5 py-5">

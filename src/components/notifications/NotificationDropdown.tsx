@@ -62,31 +62,34 @@ function NotificationsList({
       <div className="custom-scrollbar max-h-[420px] overflow-y-auto scroll-smooth py-1">
         <div className="relative grid cursor-pointer grid-cols-1 gap-1 ps-6">
           {notificationsData.map((item) => (
-            <div
-              key={item.name + item.id}
-              className="group grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-md px-2 py-2 pe-4 transition-colors hover:bg-gray-100/80 dark:hover:bg-gray-800/60"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded bg-gray-100/80 p-1 text-gray-600 dark:bg-gray-100/10 dark:text-gray-200 [&>svg]:h-5 [&>svg]:w-5">
-                <item.icon />
+              <div
+                  dir="rtl"
+                  key={`${item.id}-${item.name}`}
+                  className="group flex flex-row-reverse items-center gap-3 rounded-md px-3 py-2 pe-4 transition-colors hover:bg-gray-100/80 dark:hover:bg-gray-800/60"
+              >
+                  <div className="min-w-0 flex-1 text-right leading-5">
+                      <p className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
+                          {item.name}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {formatRelative(item.sendTime)}
+                      </p>
+                  </div>
+
+                  <div className="shrink-0 flex h-9 w-9 items-center justify-center rounded bg-gray-100/80 p-1 text-gray-600 dark:bg-white/5 dark:text-gray-200 [&>svg]:h-5 [&>svg]:w-5">
+                      <item.icon />
+                  </div>
+
+                  <div className="shrink-0 flex h-full items-center justify-center">
+                      {item.unRead ? (
+                          <span className="inline-block h-2.5 w-2.5 rounded-full bg-sky-500" />
+                      ) : (
+                          <span className="inline-flex h-2.5 w-2.5 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
+            <PiCheck className="h-[9px] w-[9px] text-gray-500 dark:text-gray-300" />
+          </span>
+                      )}
+                  </div>
               </div>
-              <div className="flex min-w-0 flex-col gap-0.5">
-                <Text className="truncate text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {item.name}
-                </Text>
-                <Text className="text-xs text-gray-500 dark:text-gray-400">
-                  {formatRelative(item.sendTime)}
-                </Text>
-              </div>
-              <div className="flex h-full items-center justify-center">
-                {item.unRead ? (
-                  <span className="inline-block h-2.5 w-2.5 rounded-full bg-sky-500" />
-                ) : (
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">
-                    <PiCheck className="h-[9px] w-[9px] text-gray-500 dark:text-gray-300" />
-                  </span>
-                )}
-              </div>
-            </div>
           ))}
         </div>
       </div>
