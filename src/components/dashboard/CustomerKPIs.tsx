@@ -1,7 +1,7 @@
 // components/customers/CustomerKPIs.tsx
 "use client";
 
-import { customerKPI } from "@/data/customers2";
+import { customerKPI } from "@/data/customers";
 import {
   TrendingUp,
   TrendingDown,
@@ -31,11 +31,20 @@ export default function CustomerKPIs() {
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {customerKPI.map((c, index) => {
         const IconComponent = getIcon(c.title);
-        const isIncrease = c.delta.includes("افزایش");
-        const isFirstCard = index === 0;
 
-        const percentageMatch = c.delta.match(/\d+\.\d+/);
-        const percentage = percentageMatch ? percentageMatch[0] : "0";
+        const rawDelta = c.delta.trim();
+        const signChar = rawDelta.charAt(0);
+        const isIncrease =
+          signChar === "+" || c.ok === true;
+
+        const numericPart = rawDelta
+          .slice(1)
+          .replace("٪", "")
+          .trim();
+
+        const percentageToDisplay = numericPart || "0";
+
+        const isFirstCard = index === 0;
 
         return (
           <div
@@ -57,7 +66,7 @@ export default function CustomerKPIs() {
                 <IconComponent className="h-[30px] w-[30px]" />
               </span>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 text-right">
                 <p
                   className={`font-medium ${
                     isFirstCard
@@ -76,8 +85,20 @@ export default function CustomerKPIs() {
                 >
                   {c.value}
                 </p>
+                {c.note && (
+                  <p
+                    className={`text-xs ${
+                      isFirstCard
+                        ? "text-gray-100/80"
+                        : "text-gray-400 dark:text-gray-500"
+                    }`}
+                  >
+                    {c.note}
+                  </p>
+                )}
               </div>
             </div>
+
             <div className="flex items-center gap-1.5">
               <div className="flex items-center gap-1">
                 <span
@@ -104,8 +125,9 @@ export default function CustomerKPIs() {
                       : "text-rose-700 dark:text-rose-400"
                   }`}
                 >
-                  {isIncrease ? "+" : "-"}
-                  {percentage}%
+                  {signChar}
+                  {percentageToDisplay}
+                  %
                 </span>
               </div>
               <span
