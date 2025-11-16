@@ -230,8 +230,8 @@ export default function AiActionsPage() {
   }, []);
 
   return (
-    <div className="h-screen w-full overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-slate-900 dark:to-gray-900">
-      <div className="flex h-full">
+    <div className="h-screen w-full overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-gray-950 dark:via-slate-900 dark:to-gray-900">
+      <div className="flex h-fit">
         <aside
           className={`fixed inset-y-0 right-0 z-50 w-72 transform border-l border-slate-200/50 bg-white/80 backdrop-blur-xl transition-transform duration-300 dark:border-slate-800/50 dark:bg-gray-900/80 lg:relative lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "translate-x-full"
@@ -240,7 +240,7 @@ export default function AiActionsPage() {
           <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b border-slate-200/50 p-4 dark:border-slate-800/50">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-blue-600 to-indigo-600">
                   <Sparkles className="h-4 w-4 text-white" />
                 </div>
                 <span className="text-sm font-bold text-slate-900 dark:text-slate-100">
@@ -281,7 +281,7 @@ export default function AiActionsPage() {
             </div>
 
             <div className="border-t border-slate-200/50 p-4 dark:border-slate-800/50">
-              <div className="rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 p-3 dark:from-blue-950/30 dark:to-indigo-950/30">
+              <div className="rounded-lg bg-linear-to-br from-blue-50 to-indigo-50 p-3 dark:from-blue-950/30 dark:to-indigo-950/30">
                 <div className="mb-1 text-xs font-semibold text-blue-900 dark:text-blue-300">
                   💡 نکته
                 </div>
@@ -345,7 +345,7 @@ export default function AiActionsPage() {
                       className={`group relative max-w-[85%] rounded-2xl px-4 py-3 shadow-sm transition-all hover:shadow-md sm:max-w-[75%] ${
                         m.role === "user"
                           ? "bg-white text-slate-800 dark:bg-slate-800 dark:text-slate-100"
-                          : "bg-gradient-to-br from-blue-600 to-indigo-600 text-white"
+                          : "bg-linear-to-br from-blue-600 to-indigo-600 text-white"
                       }`}
                     >
                       <div className="whitespace-pre-wrap text-sm leading-relaxed">
